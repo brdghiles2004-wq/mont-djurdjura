@@ -1,0 +1,634 @@
+.page {
+  width: 100%;
+  overflow: hidden;
+  color: #263b48;
+  background: #ffffff;
+}
+
+.container {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+/* ================================
+   HERO
+================================ */
+
+.hero {
+  position: relative;
+  min-height: 590px;
+  display: flex;
+  align-items: center;
+  background-image: url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2000&q=85");
+  background-position: center 48%;
+  background-size: cover;
+  color: #ffffff;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(4, 34, 52, 0.88) 0%,
+    rgba(4, 34, 52, 0.62) 48%,
+    rgba(4, 34, 52, 0.12) 100%
+  );
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 90px 0 110px;
+}
+
+.eyebrow {
+  display: inline-block;
+  color: #a8dcef;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.heroContent h1 {
+  max-width: 760px;
+  margin: 25px 0 20px;
+  font-size: clamp(42px, 6vw, 76px);
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -2px;
+}
+
+.heroContent > p {
+  max-width: 540px;
+  margin: 0;
+  color: #e1edf2;
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.heroButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 30px;
+  margin-top: 35px;
+  padding: 16px 23px;
+  background: #08749c;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.heroButton:hover {
+  background: #159bc4;
+  transform: translateY(-3px);
+}
+
+.heroButton span {
+  font-size: 19px;
+}
+
+.heroBottom {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px max(24px, calc((100% - 1180px) / 2));
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  color: #e1edf2;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+}
+
+/* ================================
+   INTRODUCTION
+================================ */
+
+.introSection {
+  padding: 115px 0;
+  background: #ffffff;
+}
+
+.introGrid {
+  display: grid;
+  grid-template-columns: 0.7fr 1.5fr;
+  gap: 70px;
+}
+
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+  color: #08749c;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.labelLine {
+  width: 35px;
+  height: 2px;
+  background: #159bc4;
+}
+
+.smallTitle {
+  display: block;
+  color: #08749c;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.introContent h2,
+.natureContent h2,
+.waterHeader h2 {
+  margin: 20px 0 25px;
+  color: #073b5c;
+  font-size: clamp(34px, 4vw, 50px);
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -1.5px;
+}
+
+.introContent h2 span,
+.waterHeader h2 span {
+  color: #159bc4;
+}
+
+.introContent p,
+.natureContent p {
+  max-width: 680px;
+  margin: 0 0 18px;
+  color: #667984;
+  font-size: 15px;
+  line-height: 2;
+}
+
+/* ================================
+   NATURE
+================================ */
+
+.natureSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 540px;
+  background: #f2f7f9;
+}
+
+.natureImage {
+  position: relative;
+  min-height: 540px;
+  background-image: url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85");
+  background-size: cover;
+  background-position: center;
+}
+
+.imageCaption {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  left: 30px;
+  padding: 20px 23px;
+  background: rgba(7, 59, 92, 0.88);
+  color: #ffffff;
+}
+
+.imageCaption span {
+  color: #a8dcef;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.imageCaption p {
+  margin: 8px 0 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.natureContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 75px clamp(35px, 7vw, 110px);
+}
+
+.natureContent h2 {
+  font-size: clamp(32px, 3.5vw, 45px);
+}
+
+.textLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 20px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #159bc4;
+  color: #08749c;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  transition: gap 0.25s ease;
+}
+
+.textLink:hover {
+  gap: 25px;
+}
+
+.textLink span {
+  font-size: 19px;
+}
+
+/* ================================
+   WATER
+================================ */
+
+.waterSection {
+  padding: 110px 0 120px;
+  background: #ffffff;
+}
+
+.waterHeader {
+  max-width: 680px;
+  margin: 0 auto 60px;
+  text-align: center;
+}
+
+.waterHeader h2 {
+  margin-bottom: 20px;
+}
+
+.waterHeader > p {
+  max-width: 580px;
+  margin: 0 auto;
+  color: #667984;
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.waterCards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.waterCard {
+  position: relative;
+  min-height: 245px;
+  padding: 35px 30px;
+  border: 1px solid #e3edf1;
+  background: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.waterCard:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 18px 40px rgba(7, 59, 92, 0.09);
+}
+
+.cardNumber {
+  position: absolute;
+  top: 25px;
+  right: 27px;
+  color: #c5d8e1;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.cardIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 25px;
+  border-radius: 50%;
+  background: #eaf6fa;
+  color: #08749c;
+  font-size: 28px;
+}
+
+.waterCard h3 {
+  margin: 0 0 12px;
+  color: #073b5c;
+  font-size: 20px;
+}
+
+.waterCard p {
+  margin: 0;
+  color: #71838d;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+/* ================================
+   FINAL BANNER
+================================ */
+
+.finalSection {
+  position: relative;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 75px 24px;
+  background-image: url("https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1800&q=85");
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+  color: #ffffff;
+}
+
+.finalOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 38, 57, 0.78);
+}
+
+.finalContent {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+}
+
+.finalContent h2 {
+  margin: 20px 0;
+  font-size: clamp(34px, 5vw, 55px);
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -1px;
+}
+
+.finalContent > p {
+  max-width: 550px;
+  margin: 0 auto;
+  color: #e0edf2;
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.finalButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 25px;
+  margin-top: 30px;
+  padding: 15px 23px;
+  background: #08749c;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  transition: background 0.25s ease;
+}
+
+.finalButton:hover {
+  background: #159bc4;
+}
+
+.finalButton span {
+  font-size: 19px;
+}
+
+/* ================================
+   TABLET
+================================ */
+
+@media (max-width: 900px) {
+  .introGrid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .natureContent {
+    padding: 55px 35px;
+  }
+
+  .waterCards {
+    gap: 15px;
+  }
+
+  .waterCard {
+    padding: 30px 22px;
+  }
+}
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 650px) {
+  .container {
+    width: calc(100% - 36px);
+  }
+
+  .hero {
+    min-height: 540px;
+    background-position: 58% center;
+  }
+
+  .heroOverlay {
+    background: linear-gradient(
+      90deg,
+      rgba(4, 34, 52, 0.88),
+      rgba(4, 34, 52, 0.48)
+    );
+  }
+
+  .heroContent {
+    width: calc(100% - 36px);
+    padding: 75px 0 100px;
+  }
+
+  .heroContent h1 {
+    margin-top: 20px;
+    font-size: 43px;
+    letter-spacing: -1.5px;
+  }
+
+  .heroContent > p {
+    font-size: 14px;
+  }
+
+  .heroBottom {
+    padding: 16px 18px;
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+
+  .introSection {
+    padding: 75px 0;
+  }
+
+  .introGrid {
+    gap: 25px;
+  }
+
+  .introContent h2,
+  .natureContent h2,
+  .waterHeader h2 {
+    font-size: 35px;
+  }
+
+  .introContent p,
+  .natureContent p {
+    font-size: 14px;
+  }
+
+  .natureSection {
+    grid-template-columns: 1fr;
+  }
+
+  .natureImage {
+    min-height: 350px;
+  }
+
+  .natureContent {
+    padding: 60px 24px 70px;
+  }
+
+  .waterSection {
+    padding: 75px 0;
+  }
+
+  .waterHeader {
+    margin-bottom: 40px;
+  }
+
+  .waterCards {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .waterCard {
+    min-height: auto;
+    padding: 28px 25px;
+  }
+
+  .finalSection {
+    min-height: 390px;
+    padding: 65px 20px;
+  }
+
+  .finalContent h2 {
+    font-size: 36px;
+  }
+
+  .finalContent > p {
+    font-size: 13px;
+  }
+}
+
+/* ================================
+   RTL - ARABIC
+================================ */
+
+.page[dir="rtl"] {
+  text-align: right;
+}
+
+.page[dir="rtl"] .heroOverlay {
+  background: linear-gradient(
+    270deg,
+    rgba(4, 34, 52, 0.88) 0%,
+    rgba(4, 34, 52, 0.62) 48%,
+    rgba(4, 34, 52, 0.12) 100%
+  );
+}
+
+.page[dir="rtl"] .heroContent h1,
+.page[dir="rtl"] .introContent h2,
+.page[dir="rtl"] .natureContent h2,
+.page[dir="rtl"] .waterHeader h2,
+.page[dir="rtl"] .finalContent h2 {
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+.page[dir="rtl"] .heroContent > p,
+.page[dir="rtl"] .introContent p,
+.page[dir="rtl"] .natureContent p,
+.page[dir="rtl"] .waterHeader > p,
+.page[dir="rtl"] .waterCard p,
+.page[dir="rtl"] .finalContent > p {
+  line-height: 2;
+}
+
+.page[dir="rtl"] .sectionLabel {
+  flex-direction: row;
+  letter-spacing: 0;
+}
+
+.page[dir="rtl"] .smallTitle,
+.page[dir="rtl"] .eyebrow {
+  letter-spacing: 0;
+}
+
+.page[dir="rtl"] .natureContent {
+  align-items: flex-start;
+}
+
+.page[dir="rtl"] .textLink {
+  flex-direction: row-reverse;
+}
+
+.page[dir="rtl"] .cardNumber {
+  right: auto;
+  left: 27px;
+}
+
+.page[dir="rtl"] .heroButton,
+.page[dir="rtl"] .finalButton {
+  flex-direction: row-reverse;
+}
+
+.page[dir="rtl"] .imageCaption {
+  text-align: right;
+}
+
+.page[dir="rtl"] .finalContent {
+  direction: rtl;
+}
+
+/* ================================
+   ACCESSIBILITY
+================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .heroButton,
+  .textLink,
+  .waterCard,
+  .finalButton {
+    transition: none;
+  }
+
+  .heroButton:hover,
+  .waterCard:hover {
+    transform: none;
+  }
+}
+
+/* ================================
+   RTL MOBILE
+================================ */
+
+@media (max-width: 650px) {
+  .page[dir="rtl"] .heroContent h1 {
+    letter-spacing: 0;
+  }
+
+  .page[dir="rtl"] .natureContent {
+    align-items: flex-start;
+  }
+
+  .page[dir="rtl"] .cardNumber {
+    left: 25px;
+  }
+}

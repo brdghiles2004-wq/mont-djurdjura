@@ -1,0 +1,759 @@
+.aboutPage {
+  --about-text: #173247;
+  --about-muted: #71818b;
+  --about-blue: #174d68;
+  --about-blue-light: #dcebf0;
+  --about-accent: #b7d6df;
+  --about-background: #ffffff;
+  --about-soft: #f4f8f9;
+
+  width: 100%;
+  overflow: hidden;
+  color: var(--about-text);
+  background: var(--about-background);
+}
+
+.container {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+/* BREADCRUMB */
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 0;
+  color: var(--about-muted);
+  font-size: 12px;
+}
+
+.breadcrumb a {
+  color: var(--about-blue);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.breadcrumb a:hover {
+  opacity: 0.65;
+}
+
+.breadcrumb span:last-child {
+  color: var(--about-text);
+}
+
+/* HERO */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: 75px;
+  padding: 55px 0 110px;
+}
+
+.heroContent {
+  max-width: 570px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  color: var(--about-blue);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.eyebrowLine {
+  width: 35px;
+  height: 1px;
+  background: var(--about-blue);
+}
+
+.heroTitle {
+  margin: 0;
+  color: var(--about-text);
+  font-size: clamp(42px, 5.3vw, 70px);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -2.5px;
+}
+
+.heroTitle span {
+  display: block;
+  margin-top: 8px;
+  color: var(--about-blue);
+}
+
+.heroDescription {
+  max-width: 520px;
+  margin: 28px 0 0;
+  color: #647681;
+  font-size: 15px;
+  line-height: 1.95;
+}
+
+.introNote {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  margin-top: 34px;
+  padding: 5px 0 5px 18px;
+  border-left: 3px solid var(--about-accent);
+}
+
+.noteMark {
+  color: var(--about-blue);
+  font-family: Georgia, serif;
+  font-size: 38px;
+  line-height: 1;
+}
+
+.introNote p {
+  margin: 0;
+  color: var(--about-blue);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.8;
+}
+
+/* HERO VISUAL */
+
+.heroVisual {
+  width: 100%;
+}
+
+.visualFrame {
+  position: relative;
+  min-height: 440px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #dceaf0, #a9c8d4);
+}
+
+.visualBackground {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 75% 20%,
+      rgba(255, 255, 255, 0.75),
+      transparent 24%
+    ),
+    linear-gradient(160deg, #e7f0f2 0%, #c5dce2 55%, #8eafbc 100%);
+}
+
+.visualSun {
+  position: absolute;
+  top: 14%;
+  right: 18%;
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.48);
+  filter: blur(2px);
+}
+
+.visualMountainOne {
+  position: absolute;
+  right: -10%;
+  bottom: -2%;
+  width: 120%;
+  height: 75%;
+  background: linear-gradient(145deg, #648b9b, #315d70);
+  clip-path: polygon(
+    0 100%,
+    12% 65%,
+    23% 78%,
+    42% 20%,
+    52% 43%,
+    68% 0,
+    100% 100%
+  );
+}
+
+.visualMountainTwo {
+  position: absolute;
+  bottom: -4%;
+  left: -15%;
+  width: 120%;
+  height: 55%;
+  background: linear-gradient(145deg, #a6c5ce, #6e99a8);
+  clip-path: polygon(
+    0 100%,
+    18% 38%,
+    32% 60%,
+    55% 15%,
+    75% 68%,
+    100% 30%,
+    100% 100%
+  );
+}
+
+.visualOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 28px;
+}
+
+.visualNumber {
+  align-self: flex-end;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: Georgia, serif;
+  font-size: 55px;
+  font-weight: 400;
+}
+
+.visualLabel {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.visualCaption {
+  margin: 14px 0 0;
+  color: var(--about-muted);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+/* SECTION HEADINGS */
+
+.sectionHeading {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 45px;
+}
+
+.sectionLabel {
+  display: inline-block;
+  color: var(--about-blue);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.sectionLine {
+  flex: 1;
+  height: 1px;
+  background: #e3eaed;
+}
+
+/* IDENTITY */
+
+.identitySection {
+  padding: 75px 0 100px;
+  border-top: 1px solid #edf1f2;
+}
+
+.identityGrid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 90px;
+}
+
+.identityTitleBlock {
+  position: relative;
+}
+
+.identityNumber {
+  display: block;
+  margin-bottom: 20px;
+  color: #9bb9c4;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.identityTitleBlock h2 {
+  max-width: 430px;
+  margin: 0;
+  color: var(--about-text);
+  font-size: clamp(30px, 3.5vw, 44px);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -1px;
+}
+
+.identityTextBlock {
+  padding-top: 5px;
+}
+
+.identityTextBlock p {
+  margin: 0 0 20px;
+  color: #687a84;
+  font-size: 14px;
+  line-height: 2;
+}
+
+/* COMMITMENTS */
+
+.commitmentsSection {
+  padding: 85px 0 105px;
+  background: var(--about-soft);
+}
+
+.commitmentsHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 45px;
+}
+
+.commitmentsHeading h2 {
+  margin: 15px 0 12px;
+  color: var(--about-text);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 500;
+  letter-spacing: -1.5px;
+}
+
+.commitmentsHeading p {
+  max-width: 560px;
+  margin: 0;
+  color: var(--about-muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.commitmentsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.commitmentCard {
+  position: relative;
+  display: flex;
+  min-height: 245px;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 28px;
+  overflow: hidden;
+  border: 1px solid #e2eaed;
+  background: #ffffff;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.commitmentCard:hover {
+  transform: translateY(-6px);
+  border-color: #b8d1da;
+  box-shadow: 0 15px 35px rgba(27, 66, 82, 0.07);
+}
+
+.commitmentNumber {
+  color: #9bb9c4;
+  font-family: Georgia, serif;
+  font-size: 14px;
+}
+
+.commitmentContent h3 {
+  margin: 0 0 12px;
+  color: var(--about-blue);
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.commitmentContent p {
+  max-width: 300px;
+  margin: 0;
+  color: var(--about-muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.commitmentArrow {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  color: #9bb9c4;
+  font-size: 19px;
+  transition: transform 0.3s ease;
+}
+
+.commitmentCard:hover .commitmentArrow {
+  transform: translate(3px, -3px);
+}
+
+/* VISION */
+
+.visionSection {
+  position: relative;
+  display: flex;
+  min-height: 340px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  margin: 100px 0;
+  padding: 65px 75px;
+  overflow: hidden;
+  background: #153c52;
+}
+
+.visionContent {
+  position: relative;
+  z-index: 2;
+  max-width: 650px;
+}
+
+.visionContent .sectionLabel {
+  color: #b8d5df;
+}
+
+.visionContent h2 {
+  max-width: 600px;
+  margin: 20px 0;
+  color: #ffffff;
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -1px;
+}
+
+.visionContent p {
+  max-width: 570px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  line-height: 2;
+}
+
+.visionDecoration {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  width: 260px;
+  height: 260px;
+  transform: translateY(-50%);
+  opacity: 0.16;
+}
+
+.visionDecoration span {
+  position: absolute;
+  display: block;
+  width: 190px;
+  height: 190px;
+  border: 1px solid #ffffff;
+  border-radius: 50%;
+}
+
+.visionDecoration span:nth-child(1) {
+  top: 0;
+  left: 0;
+}
+
+.visionDecoration span:nth-child(2) {
+  top: 35px;
+  left: 35px;
+}
+
+.visionDecoration span:nth-child(3) {
+  top: 70px;
+  left: 70px;
+}
+
+/* CTA */
+
+.ctaSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 35px;
+  padding: 55px 0 90px;
+  border-top: 1px solid #e8eef0;
+}
+
+.ctaContent {
+  max-width: 560px;
+}
+
+.ctaContent h2 {
+  margin: 14px 0 10px;
+  color: var(--about-text);
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.8px;
+}
+
+.ctaContent p {
+  margin: 0;
+  color: var(--about-muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.ctaActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 0 22px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.primaryButton {
+  color: #ffffff;
+  background: var(--about-blue);
+}
+
+.primaryButton:hover {
+  background: #0d3449;
+}
+
+.primaryButton span {
+  font-size: 16px;
+}
+
+.secondaryButton {
+  border: 1px solid #dce5e8;
+  color: var(--about-blue);
+  background: #ffffff;
+}
+
+.secondaryButton:hover {
+  border-color: var(--about-blue);
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr 0.85fr;
+    gap: 35px;
+  }
+
+  .visualFrame {
+    min-height: 370px;
+  }
+
+  .identityGrid {
+    gap: 45px;
+  }
+
+  .commitmentCard {
+    min-height: 260px;
+    padding: 22px;
+  }
+
+  .visionSection {
+    padding: 55px 45px;
+  }
+
+  .ctaSection {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 680px) {
+  .container {
+    width: min(100% - 36px, 520px);
+  }
+
+  .breadcrumb {
+    padding: 20px 0;
+    font-size: 11px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 38px;
+    padding: 35px 0 75px;
+  }
+
+  .heroTitle {
+    font-size: clamp(40px, 11vw, 56px);
+    letter-spacing: -1.8px;
+  }
+
+  .heroDescription {
+    margin-top: 20px;
+    font-size: 14px;
+  }
+
+  .introNote {
+    margin-top: 25px;
+  }
+
+  .visualFrame {
+    min-height: 330px;
+  }
+
+  .identitySection {
+    padding: 60px 0 70px;
+  }
+
+  .sectionHeading {
+    margin-bottom: 32px;
+  }
+
+  .identityGrid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .identityTitleBlock h2 {
+    font-size: 34px;
+  }
+
+  .identityTextBlock p {
+    font-size: 13px;
+  }
+
+  .commitmentsSection {
+    padding: 65px 0 70px;
+  }
+
+  .commitmentsHeading {
+    margin-bottom: 30px;
+  }
+
+  .commitmentsHeading h2 {
+    font-size: 35px;
+  }
+
+  .commitmentsGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .commitmentCard {
+    min-height: 210px;
+  }
+
+  .visionSection {
+    min-height: 310px;
+    margin: 65px 0;
+    padding: 40px 25px;
+  }
+
+  .visionContent h2 {
+    font-size: 35px;
+  }
+
+  .visionDecoration {
+    right: -100px;
+    opacity: 0.1;
+  }
+
+  .ctaSection {
+    padding: 45px 0 65px;
+  }
+
+  .ctaActions {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+  }
+}
+
+/* ARABIC - RTL */
+
+:global(html[dir="rtl"]) .aboutPage {
+  direction: rtl;
+  text-align: right;
+}
+
+:global(html[dir="rtl"]) .breadcrumb {
+  flex-direction: row;
+}
+
+:global(html[dir="rtl"]) .eyebrow {
+  letter-spacing: 0;
+}
+
+:global(html[dir="rtl"]) .introNote {
+  padding: 5px 18px 5px 0;
+  border-left: 0;
+  border-right: 3px solid var(--about-accent);
+}
+
+:global(html[dir="rtl"]) .noteMark {
+  transform: scaleX(-1);
+}
+
+:global(html[dir="rtl"]) .visualLabel {
+  letter-spacing: 0;
+}
+
+:global(html[dir="rtl"]) .visualNumber {
+  align-self: flex-start;
+}
+
+:global(html[dir="rtl"]) .commitmentArrow {
+  right: auto;
+  left: 25px;
+}
+
+:global(html[dir="rtl"]) .commitmentCard:hover .commitmentArrow {
+  transform: translate(-3px, -3px);
+}
+
+:global(html[dir="rtl"]) .visionDecoration {
+  right: auto;
+  left: 5%;
+}
+
+:global(html[dir="rtl"]) .visionDecoration span:nth-child(1) {
+  left: auto;
+  right: 0;
+}
+
+:global(html[dir="rtl"]) .visionDecoration span:nth-child(2) {
+  left: auto;
+  right: 35px;
+}
+
+:global(html[dir="rtl"]) .visionDecoration span:nth-child(3) {
+  left: auto;
+  right: 70px;
+}
+
+:global(html[dir="rtl"]) .primaryButton,
+:global(html[dir="rtl"]) .secondaryButton {
+  flex-direction: row;
+}
+
+@media (max-width: 680px) {
+  :global(html[dir="rtl"]) .visionDecoration {
+    right: auto;
+    left: -100px;
+  }
+}

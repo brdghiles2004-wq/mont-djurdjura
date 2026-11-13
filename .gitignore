@@ -1,0 +1,66 @@
+
+# Logs and system files
+*.log
+.DS_Store
+Thumbs.db
+
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+.env.backup
+.env.production
+/auth.json
+*.pem
+
+# IDE and editor files
+.phpactor.json
+.phpunit.result.cache
+/.fleet
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+
+# Dependencies
+/node_modules
+/vendor
+/frontend/node_modules
+/frontend/.next
+
+# Laravel generated files
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/bootstrap/cache/*.php
+!/bootstrap/cache/.gitignore
+
+# Laravel runtime files
+/storage/logs/*
+!/storage/logs/.gitignore
+
+# SQLite databases
+/database/*.sqlite
+/database/*.sqlite-*
+
+# Frontend / Next.js
+/frontend/.vercel
+/frontend/out
+/frontend/build
+/frontend/coverage
+/frontend/next-env.d.ts
+
+# Local backups and temporary files
+/frontend-backup/
+*.backup
+*.bak
+*.backup.*
+
+# Keep Git placeholder files
+!/bootstrap/cache/.gitignore
+!/storage/logs/.gitignore
+/frontend/README.md
+/roles_backend_info.txt

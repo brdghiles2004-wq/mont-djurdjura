@@ -1,0 +1,1818 @@
+/* =========================================================
+   CLIENTS MANAGER — GLOBAL
+========================================================= */
+
+.cm-manager {
+    --cm-primary: #073b5c;
+    --cm-secondary: #08749c;
+    --cm-text: #18394c;
+    --cm-muted: #718894;
+    --cm-border: rgba(7, 59, 92, 0.1);
+    --cm-mint: #eaf7fc;
+
+    color: var(--cm-text);
+    width: 100%;
+    min-width: 0;
+    font-size: 12px;
+}
+
+.cm-manager * {
+    box-sizing: border-box;
+}
+
+.cm-manager button,
+.cm-manager input,
+.cm-manager select,
+.cm-manager textarea {
+    font: inherit;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.cm-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.cm-eyebrow {
+    display: block;
+    color: var(--cm-secondary);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+}
+
+.cm-heading h2 {
+    color: var(--cm-primary);
+    font-size: 24px;
+    margin: 0 0 6px;
+    font-weight: 750;
+}
+
+.cm-heading p {
+    color: var(--cm-muted);
+    font-size: 13px;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.cm-heading-actions,
+.cm-export-actions {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex-wrap: wrap;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.cm-primary-button,
+.cm-secondary-button,
+.cm-search-button,
+.cm-export-button,
+.cm-cancel-button {
+    min-height: 40px;
+    padding: 0 15px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+    white-space: nowrap;
+}
+
+.cm-primary-button {
+    color: #fff;
+    background: var(--cm-primary);
+    border: 1px solid var(--cm-primary);
+}
+
+.cm-primary-button:hover {
+    background: var(--cm-secondary);
+    border-color: var(--cm-secondary);
+}
+
+.cm-secondary-button,
+.cm-export-button {
+    color: var(--cm-primary);
+    background: #fff;
+    border: 1px solid var(--cm-border);
+}
+
+.cm-secondary-button:hover,
+.cm-export-button:hover {
+    background: var(--cm-mint);
+    border-color: rgba(7, 59, 92, 0.2);
+}
+
+.cm-primary-button:disabled,
+.cm-secondary-button:disabled,
+.cm-export-button:disabled,
+.cm-cancel-button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* =========================================================
+   SUMMARY CARDS — 3 BOXES
+========================================================= */
+
+.cm-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.cm-summary-card {
+    min-width: 0;
+    min-height: 92px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    background: #fff;
+    border: 1px solid var(--cm-border);
+    border-radius: 12px;
+}
+
+.cm-summary-icon {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: var(--cm-mint);
+    color: var(--cm-primary);
+}
+
+.cm-summary-blue {
+    background: #edf2ff;
+    color: #5269a5;
+}
+
+.cm-summary-orange {
+    background: #fff4e9;
+    color: #c27a36;
+}
+
+.cm-summary-card > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.cm-summary-card span {
+    font-size: 12px !important;
+    line-height: 1.5;
+    color: var(--cm-muted);
+    font-weight: 600;
+}
+
+.cm-summary-card strong {
+    font-size: 24px !important;
+    color: var(--cm-primary);
+    line-height: 1.2;
+    font-weight: 800;
+}
+
+.cm-summary-card small {
+    font-size: 11px !important;
+    line-height: 1.5;
+    color: #8296a1;
+}
+
+/* =========================================================
+   TOOLBAR & SEARCH
+========================================================= */
+
+.cm-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px;
+    margin-bottom: 16px;
+    background: #fff;
+    border: 1px solid var(--cm-border);
+    border-radius: 12px;
+}
+
+.cm-search-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+
+.cm-search-field {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0 12px;
+    flex: 1;
+    min-width: 100px;
+    border: 1px solid var(--cm-border);
+    border-radius: 8px;
+    color: #91a4ae;
+    background: #fbfdfe;
+}
+
+.cm-search-field:focus-within {
+    border-color: var(--cm-secondary);
+    box-shadow: 0 0 0 3px rgba(8, 116, 156, 0.08);
+}
+
+.cm-search-field input {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--cm-text);
+    font-size: 12px;
+}
+
+.cm-search-field input::placeholder {
+    color: #a2b0b7;
+}
+
+.cm-search-field button {
+    border: 0;
+    background: transparent;
+    color: #8299a5;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.cm-search-button {
+    color: #fff;
+    background: var(--cm-primary);
+    border: 1px solid var(--cm-primary);
+}
+
+.cm-search-button:hover {
+    background: var(--cm-secondary);
+}
+
+/* =========================================================
+   TABLE — 100% WIDTH, NO HORIZONTAL SCROLL
+========================================================= */
+
+.cm-table-card {
+    width: 100%;
+    min-width: 0;
+    background: #fff;
+    border: 1px solid var(--cm-border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.cm-table-heading {
+    min-height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #edf2f5;
+}
+
+.cm-table-heading h3 {
+    color: var(--cm-primary);
+    font-size: 15px !important;
+    margin: 0 0 5px;
+    font-weight: 750;
+}
+
+.cm-table-heading p {
+    color: var(--cm-muted);
+    font-size: 12px !important;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.cm-page-label {
+    color: var(--cm-muted);
+    font-size: 11px !important;
+    font-weight: 700;
+}
+
+.cm-table-scroll {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.cm-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: auto;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.cm-table th {
+    height: 46px;
+    padding: 0 12px;
+    background: #f7fafb;
+    color: #627d8a;
+    font-size: 10px !important;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+}
+
+.cm-table td {
+    padding: 14px 12px;
+    border-top: 1px solid #edf2f5;
+    color: var(--cm-text);
+    font-size: 12px !important;
+    vertical-align: middle;
+    line-height: 1.5;
+}
+
+.cm-table tbody tr {
+    transition: background 0.2s;
+}
+
+.cm-table tbody tr:hover {
+    background: #fbfdfe;
+}
+
+/* ---------------------------------------------------------
+   Largeur des 7 colonnes :
+   1 Client | 2 Entreprise | 3 Coordonnées | 4 Messages
+   5 Demandes devis | 6 Inscription | 7 Actions
+   --------------------------------------------------------- */
+
+/* Colonnes larges : se partagent l'espace restant */
+.cm-table th:nth-child(1),
+.cm-table td:nth-child(1) {
+    width: 30%;
+}
+
+.cm-table th:nth-child(2),
+.cm-table td:nth-child(2) {
+    width: 18%;
+}
+
+.cm-table th:nth-child(3),
+.cm-table td:nth-child(3) {
+    width: 30%;
+}
+
+/* Colonnes étroites : prennent juste la largeur de leur contenu */
+.cm-table th:nth-child(n + 4),
+.cm-table td:nth-child(n + 4) {
+    width: 1%;
+    white-space: nowrap;
+}
+
+/* Messages et Demandes devis centrés */
+.cm-table th:nth-child(4),
+.cm-table td:nth-child(4),
+.cm-table th:nth-child(5),
+.cm-table td:nth-child(5) {
+    text-align: center;
+}
+
+/* Les textes des 3 colonnes larges passent à la ligne si trop longs */
+.cm-table td:nth-child(-n + 3) {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   CLIENT CELL
+========================================================= */
+
+.cm-client-cell {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+}
+
+.cm-avatar {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--cm-mint);
+    color: var(--cm-primary);
+    font-size: 12px !important;
+    font-weight: 800;
+}
+
+.cm-client-cell > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.cm-client-cell strong {
+    color: var(--cm-primary);
+    font-size: 12px !important;
+    line-height: 1.4;
+    font-weight: 800;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.cm-client-cell span {
+    color: #8498a2;
+    font-size: 10px !important;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.cm-company {
+    color: #536d7b;
+    font-size: 12px !important;
+    line-height: 1.5;
+}
+
+.cm-contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.cm-contact-info span {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #617986;
+    font-size: 11px !important;
+    line-height: 1.5;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.cm-contact-info svg {
+    flex-shrink: 0;
+    color: #91a7b2;
+}
+
+.cm-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--cm-primary);
+    font-weight: 800;
+    font-size: 12px !important;
+}
+
+.cm-count svg {
+    color: var(--cm-secondary);
+}
+
+.cm-date {
+    color: #718894;
+    white-space: nowrap;
+    font-size: 11px !important;
+}
+
+/* =========================================================
+   TABLE ACTIONS
+========================================================= */
+
+.cm-row-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cm-row-actions button {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.cm-action-view {
+    color: #08749c;
+    background: #eaf7fc;
+    border: 1px solid #d8edf5;
+}
+
+.cm-action-edit {
+    color: #98712e;
+    background: #fff8e9;
+    border: 1px solid #f2e7ca;
+}
+
+.cm-action-delete {
+    color: #b64d4d;
+    background: #fff1f1;
+    border: 1px solid #f3dddd;
+}
+
+.cm-row-actions button:hover {
+    filter: brightness(0.96);
+    transform: translateY(-1px);
+}
+
+.cm-row-actions button:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+/* =========================================================
+   EMPTY & LOADING STATES
+========================================================= */
+
+.cm-table-state {
+    height: 170px;
+    text-align: center !important;
+    color: var(--cm-muted) !important;
+    font-size: 12px !important;
+}
+
+.cm-table-state svg {
+    vertical-align: middle;
+    margin-right: 9px;
+}
+
+.cm-empty-state {
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    color: #9aabb3;
+    gap: 10px;
+    padding: 22px;
+}
+
+.cm-empty-state svg {
+    color: #8ab9ca;
+}
+
+.cm-empty-state strong {
+    color: var(--cm-primary);
+    font-size: 14px !important;
+}
+
+.cm-empty-state p {
+    color: var(--cm-muted);
+    font-size: 12px !important;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.cm-loading-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 24px 28px;
+    color: var(--cm-primary);
+    background: #fff;
+    border-radius: 10px;
+    font-size: 13px !important;
+}
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+.cm-pagination {
+    min-height: 60px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid #edf2f5;
+}
+
+.cm-pagination > span {
+    color: var(--cm-muted);
+    font-size: 11px !important;
+    line-height: 1.5;
+}
+
+.cm-pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cm-pagination-controls button {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    color: var(--cm-primary);
+    background: #fff;
+    border: 1px solid var(--cm-border);
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.cm-pagination-controls button:disabled {
+    color: #bdc8ce;
+    cursor: not-allowed;
+    background: #f8fafb;
+}
+
+.cm-pagination-controls span {
+    min-width: 26px;
+    text-align: center;
+    color: var(--cm-secondary);
+    font-size: 12px !important;
+    font-weight: 800;
+}
+
+/* =========================================================
+   ALERTS
+========================================================= */
+
+.cm-alert {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    margin-bottom: 14px;
+    border-radius: 8px;
+    font-size: 12px !important;
+    line-height: 1.6;
+}
+
+.cm-alert > span {
+    flex: 1;
+}
+
+.cm-alert button {
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-weight: 700;
+    font-size: 12px !important;
+    cursor: pointer;
+}
+
+.cm-alert-success {
+    color: #23734d;
+    background: #edf9f2;
+    border: 1px solid #d6efdf;
+}
+
+.cm-alert-error {
+    color: #a54141;
+    background: #fff2f2;
+    border: 1px solid #f2dddd;
+}
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+.cm-modal-overlay,
+.cm-profile-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(5, 28, 42, 0.55);
+    backdrop-filter: blur(3px);
+}
+
+.cm-modal {
+    width: min(640px, 100%);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.2);
+}
+
+.cm-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 20px 24px;
+    border-bottom: 1px solid #edf2f5;
+}
+
+.cm-modal-header h3 {
+    margin: 0 0 5px;
+    color: var(--cm-primary);
+    font-size: 18px !important;
+    font-weight: 750;
+}
+
+.cm-modal-header p {
+    margin: 0;
+    color: var(--cm-muted);
+    font-size: 12px !important;
+}
+
+.cm-modal-close {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    color: #728995;
+    background: #f5f8fa;
+    border: 1px solid var(--cm-border);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.cm-modal-close:hover {
+    color: #a54141;
+    background: #fff2f2;
+}
+
+.cm-modal-body {
+    padding: 20px 24px;
+    overflow-y: auto;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.cm-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.cm-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+.cm-field-full {
+    grid-column: 1 / -1;
+}
+
+.cm-field label {
+    color: #526c79;
+    font-size: 11px !important;
+    font-weight: 800;
+}
+
+.cm-field input,
+.cm-field textarea {
+    width: 100%;
+    min-height: 41px;
+    padding: 10px 12px;
+    color: var(--cm-text);
+    background: #fbfdfe;
+    border: 1px solid #dce8ed;
+    border-radius: 8px;
+    outline: none;
+    font-size: 12px !important;
+    resize: vertical;
+}
+
+.cm-field input:focus,
+.cm-field textarea:focus {
+    border-color: var(--cm-secondary);
+    box-shadow: 0 0 0 3px rgba(8, 116, 156, 0.08);
+}
+
+.cm-field input::placeholder,
+.cm-field textarea::placeholder {
+    color: #a6b4bb;
+}
+
+.cm-modal-body > .cm-alert {
+    margin-top: 16px;
+    margin-bottom: 0;
+}
+
+.cm-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 9px;
+    padding: 14px 24px;
+    border-top: 1px solid #edf2f5;
+    background: #fbfdfe;
+}
+
+.cm-cancel-button {
+    color: #607985;
+    background: #fff;
+    border: 1px solid var(--cm-border);
+}
+
+.cm-cancel-button:hover {
+    background: #f2f7fa;
+}
+
+/* =========================================================
+   CLIENT PROFILE
+========================================================= */
+
+.cm-profile-overlay {
+    align-items: flex-start;
+    overflow-y: auto;
+}
+
+.cm-profile {
+    width: min(980px, 100%);
+    margin: 15px auto;
+    padding: 22px;
+    background: #f5f8fa;
+    border-radius: 14px;
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.2);
+    font-size: 12px;
+}
+
+.cm-profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.cm-back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    padding: 0 13px;
+    color: var(--cm-primary);
+    background: #fff;
+    border: 1px solid var(--cm-border);
+    border-radius: 8px;
+    font-size: 12px !important;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* =========================================================
+   PROFILE IDENTITY
+========================================================= */
+
+.cm-profile-identity {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    background: #fff;
+    border: 1px solid var(--cm-border);
+    border-radius: 12px;
+}
+
+.cm-profile-avatar {
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    color: var(--cm-primary);
+    background: var(--cm-mint);
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.cm-profile-name {
+    flex: 1;
+    min-width: 0;
+}
+
+.cm-profile-name .cm-eyebrow {
+    margin-bottom: 5px;
+}
+
+.cm-profile-name h2 {
+    color: var(--cm-primary);
+    font-size: 22px;
+    line-height: 1.3;
+    font-weight: 750;
+    margin: 0 0 4px;
+}
+
+.cm-profile-name p {
+    color: var(--cm-muted);
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* =========================================================
+   PROFILE STATS
+========================================================= */
+
+.cm-profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.cm-profile-stats article {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+    padding: 14px;
+    color: var(--cm-secondary);
+    background: #fff;
+    border: 1px solid var(--cm-border);
+    border-radius: 10px;
+}
+
+.cm-profile-stats article > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cm-profile-stats span {
+    color: var(--cm-muted);
+    font-size: 11px !important;
+}
+
+.cm-profile-stats strong {
+    color: var(--cm-primary);
+    font-size: 15px !important;
+}
+
+/* =========================================================
+   PROFILE GRID & CARDS
+========================================================= */
+
+.cm-profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.cm-profile-card {
+    min-width: 0;
+    padding: 18px;
+    background: #fff;
+    border: 1px solid var(--cm-border);
+    border-radius: 12px;
+}
+
+.cm-profile-card-full {
+    grid-column: 1 / -1;
+}
+
+.cm-profile-card h3 {
+    margin: 0 0 15px;
+    padding-bottom: 11px;
+    color: var(--cm-primary);
+    border-bottom: 1px solid #edf2f5;
+    font-size: 14px;
+    line-height: 1.5;
+    font-weight: 800;
+}
+
+/* =========================================================
+   PROFILE INFORMATION
+========================================================= */
+
+.cm-profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.cm-profile-info > div {
+    display: grid;
+    grid-template-columns: 20px 100px minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    color: var(--cm-secondary);
+}
+
+.cm-profile-info span {
+    color: var(--cm-muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.cm-profile-info strong {
+    color: var(--cm-text);
+    font-size: 12px;
+    line-height: 1.6;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   CLIENT NOTES
+========================================================= */
+
+.cm-notes-box {
+    margin-top: 17px;
+    padding: 12px;
+    background: #f7fafb;
+    border: 1px solid #edf2f5;
+    border-radius: 8px;
+}
+
+.cm-notes-box strong {
+    color: var(--cm-primary);
+    font-size: 12px;
+}
+
+.cm-notes-box p {
+    margin: 6px 0 0;
+    color: var(--cm-muted);
+    font-size: 12px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+
+/* =========================================================
+   CLIENT HISTORY
+========================================================= */
+
+.cm-history-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.cm-history-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 11px 0;
+    border-bottom: 1px solid #edf2f5;
+}
+
+.cm-history-item:last-child {
+    border-bottom: 0;
+}
+
+.cm-history-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    color: var(--cm-secondary);
+    background: var(--cm-mint);
+    border-radius: 8px;
+}
+
+.cm-history-item > div:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+}
+
+.cm-history-item strong {
+    color: var(--cm-primary);
+    font-size: 12px !important;
+}
+
+.cm-history-item span {
+    color: var(--cm-muted);
+    font-size: 11px !important;
+}
+
+.cm-history-item .cm-history-status {
+    padding: 5px 9px;
+    color: #557180 !important;
+    background: #f1f6f8;
+    border-radius: 5px;
+    white-space: nowrap;
+}
+
+.cm-history-empty {
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 9px;
+    color: #91a7b2;
+    font-size: 12px;
+    text-align: center;
+}
+
+.cm-history-empty span {
+    line-height: 1.6;
+}
+
+/* =========================================================
+   CONTACT MESSAGE HISTORY
+========================================================= */
+
+.cm-messages-history {
+    width: 100%;
+    font-size: 12px;
+}
+
+.cm-messages-history-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.cm-messages-history-heading h3 {
+    margin-bottom: 5px;
+    font-size: 16px !important;
+    line-height: 1.4;
+}
+
+.cm-messages-history-heading p {
+    margin: 0;
+    color: #687786;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.cm-messages-total {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 13px;
+    border-radius: 30px;
+    background: #eaf3f8;
+    color: #08749c;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.cm-contact-message-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cm-contact-message {
+    width: 100%;
+    padding: 18px;
+    border: 1px solid #dce6ec;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 3px 12px rgba(20, 45, 60, 0.03);
+}
+
+.cm-contact-message-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.cm-contact-message-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.cm-contact-message-title > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cm-contact-message-title strong {
+    color: #18394c;
+    font-size: 14px !important;
+    font-weight: 800;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.cm-contact-message-title span {
+    color: #72818d;
+    font-size: 11px !important;
+    line-height: 1.5;
+}
+
+.cm-contact-message .cm-history-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #eaf4f8;
+    color: #08749c;
+}
+
+.cm-message-label {
+    display: block;
+    margin-bottom: 9px;
+    color: #526c79;
+    font-size: 10px !important;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.cm-original-message {
+    margin-top: 16px;
+    padding: 15px 17px;
+    border-radius: 10px;
+    background: #f5f8fa;
+    border: 1px solid #e7edf1;
+}
+
+.cm-original-message p {
+    margin: 0;
+    color: #253f50;
+    font-size: 13px !important;
+    line-height: 1.8 !important;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.cm-previous-reply {
+    margin-top: 14px;
+    padding: 15px 17px;
+    border-left: 4px solid #08749c;
+    border-radius: 9px;
+    background: #edf6fa;
+}
+
+.cm-previous-reply-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 9px;
+    color: #075b7c;
+}
+
+.cm-previous-reply-heading strong {
+    font-size: 12px !important;
+    font-weight: 800;
+}
+
+.cm-previous-reply p {
+    margin: 0;
+    color: #25465a;
+    font-size: 13px !important;
+    line-height: 1.8 !important;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.cm-previous-reply > span {
+    display: block;
+    margin-top: 10px;
+    color: #647d8c;
+    font-size: 11px !important;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   REPLY BUTTON
+========================================================= */
+
+.cm-message-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.cm-client-reply-button {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 17px;
+    border: none;
+    border-radius: 8px;
+    background: #08749c;
+    color: #fff;
+    font-size: 12px !important;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.cm-client-reply-button:hover {
+    background: #065c7e;
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   REPLY FORM
+========================================================= */
+
+.cm-client-reply-form {
+    margin-top: 16px;
+    padding: 18px;
+    border: 1px solid #cbdfe9;
+    border-radius: 12px;
+    background: #f5fafc;
+}
+
+.cm-client-reply-form-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.cm-client-reply-form-heading > div {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #08749c;
+}
+
+.cm-client-reply-form-heading h4 {
+    margin: 0;
+    color: #18394c;
+    font-size: 14px !important;
+    font-weight: 800;
+}
+
+.cm-client-reply-form-heading > span {
+    color: #617887;
+    font-size: 11px !important;
+    overflow-wrap: anywhere;
+}
+
+.cm-client-reply-textarea {
+    display: block;
+    width: 100%;
+    min-height: 140px;
+    padding: 13px 15px;
+    resize: vertical;
+    border: 1px solid #cbd9e1;
+    border-radius: 9px;
+    outline: none;
+    background: #fff;
+    color: #18394c;
+    font-family: inherit;
+    font-size: 13px !important;
+    line-height: 1.7 !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cm-client-reply-textarea::placeholder {
+    color: #96a5ae;
+    font-size: 12px;
+}
+
+.cm-client-reply-textarea:focus {
+    border-color: #08749c;
+    box-shadow: 0 0 0 3px rgba(8, 116, 156, 0.1);
+}
+
+.cm-client-reply-textarea:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.cm-reply-character-count {
+    margin-top: 7px;
+    color: #71838f;
+    font-size: 10px !important;
+    text-align: right;
+}
+
+.cm-client-reply-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+}
+
+.cm-reply-cancel-button,
+.cm-client-send-reply-button {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 17px;
+    border-radius: 8px;
+    font-size: 12px !important;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.cm-reply-cancel-button {
+    border: 1px solid #d1dce2;
+    background: #fff;
+    color: #506574;
+}
+
+.cm-reply-cancel-button:hover {
+    background: #edf2f5;
+}
+
+.cm-client-send-reply-button {
+    border: none;
+    background: #08749c;
+    color: #fff;
+}
+
+.cm-client-send-reply-button:hover:not(:disabled) {
+    background: #065c7e;
+    transform: translateY(-1px);
+}
+
+.cm-client-send-reply-button:disabled,
+.cm-reply-cancel-button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* =========================================================
+   REPLY ALERTS
+========================================================= */
+
+.cm-reply-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 12px 15px;
+    border-radius: 9px;
+    font-size: 12px !important;
+    line-height: 1.6;
+}
+
+.cm-reply-alert-error {
+    border: 1px solid #f1c7c7;
+    background: #fff1f1;
+    color: #a52d2d;
+}
+
+.cm-reply-alert-success {
+    border: 1px solid #bde4cf;
+    background: #effaf3;
+    color: #217346;
+}
+
+/* =========================================================
+   MESSAGE STATUS
+========================================================= */
+
+.cm-message-status-new {
+    background: #fff4df;
+    color: #a66a0b;
+    font-size: 11px !important;
+}
+
+.cm-message-status-replied {
+    background: #e8f7ee;
+    color: #23814d;
+    font-size: 11px !important;
+}
+
+/* =========================================================
+   PROFILE FOOTER
+========================================================= */
+
+.cm-profile-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding-top: 16px;
+    color: var(--cm-muted);
+    font-size: 11px !important;
+}
+
+/* =========================================================
+   SPINNER
+========================================================= */
+
+.cm-spinning {
+    animation: cm-spin 0.8s linear infinite;
+}
+
+@keyframes cm-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   MODAL LAYERING
+========================================================= */
+
+.cm-profile-overlay {
+    z-index: 120;
+}
+
+.cm-modal-overlay {
+    z-index: 130;
+}
+
+.cm-modal {
+    position: relative;
+    z-index: 131;
+}
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+    .cm-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .cm-export-actions {
+        justify-content: flex-end;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+    .cm-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .cm-heading h2 {
+        font-size: 21px;
+    }
+
+    .cm-heading-actions {
+        width: 100%;
+    }
+
+    .cm-heading-actions button {
+        flex: 1;
+    }
+
+    .cm-summary-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .cm-summary-card {
+        min-height: 82px;
+        padding: 15px;
+    }
+
+    .cm-search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cm-search-field {
+        min-height: 40px;
+    }
+
+    .cm-search-button {
+        width: 100%;
+    }
+
+    .cm-export-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .cm-export-button {
+        width: 100%;
+    }
+
+    .cm-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cm-field-full {
+        grid-column: auto;
+    }
+
+    .cm-modal-overlay,
+    .cm-profile-overlay {
+        padding: 10px;
+    }
+
+    .cm-modal {
+        max-height: 94vh;
+    }
+
+    .cm-modal-header,
+    .cm-modal-body {
+        padding: 16px;
+    }
+
+    .cm-modal-footer {
+        padding: 12px 16px;
+    }
+
+    .cm-profile {
+        padding: 14px;
+        margin: 0 auto;
+    }
+
+    .cm-profile-identity {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        padding: 15px;
+    }
+
+    .cm-profile-name {
+        flex-basis: calc(100% - 85px);
+    }
+
+    .cm-profile-name h2 {
+        font-size: 19px;
+    }
+
+    .cm-profile-identity > .cm-primary-button {
+        width: 100%;
+    }
+
+    .cm-profile-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .cm-profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cm-profile-card-full {
+        grid-column: auto;
+    }
+
+    .cm-profile-info > div {
+        grid-template-columns: 20px 85px minmax(0, 1fr);
+    }
+
+    .cm-profile-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .cm-pagination {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .cm-table-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .cm-contact-message {
+        padding: 14px;
+    }
+
+    .cm-client-reply-form {
+        padding: 14px;
+    }
+
+    .cm-contact-message-header {
+        align-items: flex-start;
+    }
+
+    .cm-client-reply-form-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .cm-client-reply-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .cm-reply-cancel-button,
+    .cm-client-send-reply-button {
+        width: 100%;
+    }
+
+    .cm-message-actions {
+        justify-content: stretch;
+    }
+
+    .cm-client-reply-button {
+        width: 100%;
+    }
+}
+
+/* =========================================================
+   PRINT / PDF
+========================================================= */
+
+@media print {
+    @page {
+        size: A4 landscape;
+        margin: 12mm;
+    }
+
+    body * {
+        visibility: hidden !important;
+    }
+
+    .cm-manager,
+    .cm-manager * {
+        visibility: visible !important;
+    }
+
+    .cm-manager {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        color: #111;
+        background: #fff;
+    }
+
+    .cm-heading-actions,
+    .cm-toolbar,
+    .cm-pagination,
+    .cm-row-actions,
+    .cm-modal-overlay,
+    .cm-profile-overlay,
+    .cm-alert {
+        display: none !important;
+    }
+
+    .cm-table-card,
+    .cm-summary-card {
+        border: 1px solid #ccc;
+        box-shadow: none;
+    }
+
+    .cm-table-scroll {
+        overflow: visible;
+    }
+
+    .cm-table {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .cm-table th,
+    .cm-table td {
+        padding: 7px;
+        color: #111;
+        font-size: 8px !important;
+    }
+
+    .cm-table th {
+        background: #eee !important;
+    }
+
+    .cm-table tr {
+        break-inside: avoid;
+    }
+
+    .cm-profile-overlay {
+        display: none !important;
+    }
+}
