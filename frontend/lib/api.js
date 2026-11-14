@@ -1,16 +1,17 @@
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://mont-djurdjura-api.onrender.com/api";
 
 export const API_ORIGIN = API_URL
   .replace(/\/api\/?$/i, "")
   .replace(/\/+$/, "");
 
 const API_BASE = `${API_ORIGIN}/api`;
+const BROWSER_API_BASE = "/backend/api";
+const BROWSER_CSRF_URL = "/backend/sanctum/csrf-cookie";
 
-/* =========================
-   PUBLIC PRODUCTS
-========================= */
+/* PUBLIC PRODUCTS */
 
 function normalizeLocale(locale = "fr") {
   return ["fr", "en", "ar"].includes(locale) ? locale : "fr";
@@ -39,20 +40,13 @@ function normalizeProduct(product) {
     number: String(product.sort_order ?? product.id).padStart(2, "0"),
     image,
     label: product.category?.name || "Mont Djurdjura",
-    shortDescription:
-      product.short_description || product.description || "",
-    description:
-      product.description || product.short_description || "",
+    shortDescription: product.short_description || product.description || "",
+    description: product.description || product.short_description || "",
     capacity: product.capacity || null,
     packaging: product.packaging || null,
   };
 }
 
-/**
- * Public products.
- * Locale: fr | en | ar
- * Revalidate every 5 minutes.
- */
 export async function getPublicProducts(locale = "fr") {
   try {
     const language = normalizeLocale(locale);
@@ -61,12 +55,8 @@ export async function getPublicProducts(locale = "fr") {
       `${API_BASE}/products?locale=${language}`,
       {
         method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
-        next: {
-          revalidate: 300,
-        },
+        headers: { Accept: "application/json" },
+        next: { revalidate: 300 },
       }
     );
 
@@ -88,11 +78,6 @@ export async function getPublicProducts(locale = "fr") {
   }
 }
 
-/**
- * Public product details.
- * Locale: fr | en | ar
- * Revalidate every 5 minutes.
- */
 export async function getPublicProduct(slug, locale = "fr") {
   try {
     const language = normalizeLocale(locale);
@@ -101,18 +86,12 @@ export async function getPublicProduct(slug, locale = "fr") {
       `${API_BASE}/products/${encodeURIComponent(slug)}?locale=${language}`,
       {
         method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
-        next: {
-          revalidate: 300,
-        },
+        headers: { Accept: "application/json" },
+        next: { revalidate: 300 },
       }
     );
 
-    if (response.status === 404) {
-      return null;
-    }
+    if (response.status === 404) return null;
 
     if (!response.ok) {
       console.error("Product API error:", response.status);
@@ -121,9 +100,7 @@ export async function getPublicProduct(slug, locale = "fr") {
 
     const result = await response.json();
 
-    if (!result.success || !result.data) {
-      return null;
-    }
+    if (!result.success || !result.data) return null;
 
     return normalizeProduct(result.data);
   } catch (error) {
@@ -132,21 +109,22 @@ export async function getPublicProduct(slug, locale = "fr") {
   }
 }
 
-/* =========================
-   API HELPERS
-========================= */
+/* API HELPERS */
 
 function normalizeEndpoint(endpoint) {
   const cleanEndpoint = String(endpoint).replace(/^\/+/, "");
   const withoutApiPrefix = cleanEndpoint.replace(/^api\/+/i, "");
 
-  return `${API_BASE}/${withoutApiPrefix}`;
+  const base =
+    typeof window !== "undefined"
+      ? BROWSER_API_BASE
+      : API_BASE;
+
+  return `${base}/${withoutApiPrefix}`;
 }
 
 function getCookie(name) {
-  if (typeof document === "undefined") {
-    return null;
-  }
+  if (typeof document === "undefined") return null;
 
   const row = document.cookie
     .split("; ")
@@ -157,31 +135,27 @@ function getCookie(name) {
     : null;
 }
 
-/* =========================
-   CSRF PROTECTION
-========================= */
+/* CSRF */
 
 export async function getCsrfCookie() {
-  const response = await fetch(
-    `${API_ORIGIN}/sanctum/csrf-cookie`,
-    {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-      },
-      cache: "no-store",
-    }
-  );
+  const csrfUrl =
+    typeof window !== "undefined"
+      ? BROWSER_CSRF_URL
+      : `${API_ORIGIN}/sanctum/csrf-cookie`;
+
+  const response = await fetch(csrfUrl, {
+    method: "GET",
+    credentials: "include",
+    headers: { Accept: "application/json" },
+    cache: "no-store",
+  });
 
   if (!response.ok) {
     throw new Error("Unable to initialize CSRF protection.");
   }
 }
 
-/* =========================
-   MAIN API FETCH
-========================= */
+/* MAIN API FETCH */
 
 export async function apiFetch(endpoint, options = {}) {
   const method = (options.method || "GET").toUpperCase();
@@ -193,9 +167,7 @@ export async function apiFetch(endpoint, options = {}) {
   const headers = {
     Accept: "application/json",
     ...(!isFormData && body
-      ? {
-          "Content-Type": "application/json",
-        }
+      ? { "Content-Type": "application/json" }
       : {}),
     ...options.headers,
   };
@@ -236,9 +208,7 @@ export async function apiFetch(endpoint, options = {}) {
   return data;
 }
 
-/* =========================
-   ADMIN AUTHENTICATION
-========================= */
+/* AUTH */
 
 export async function loginAdmin(credentials) {
   await getCsrfCookie();
