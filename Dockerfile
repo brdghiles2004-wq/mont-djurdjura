@@ -10,14 +10,14 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     unzip \
     && docker-php-ext-install \
-    pdo_pgsql \
-    pdo_sqlite \
-    bcmath \
-    intl \
-    zip \
-    opcache \
-    mbstring \
-    curl \
+        pdo_pgsql \
+        pdo_sqlite \
+        bcmath \
+        intl \
+        zip \
+        opcache \
+        mbstring \
+        curl \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
@@ -34,7 +34,11 @@ RUN mkdir -p \
     storage/framework/views \
     storage/logs
 
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --prefer-dist \
+    --optimize-autoloader
 
 RUN sed -ri 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf \
     && printf '<Directory /var/www/html/public>\nAllowOverride All\nRequire all granted\n</Directory>\n' > /etc/apache2/conf-available/laravel.conf \
@@ -44,4 +48,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 10000
 
-CMD ["sh", "-c", "set -e; PORT=${PORT:-10000}; php artisan migrate --force; sed -i \"s/Listen 80/Listen ${PORT}/\" /etc/apache2/ports.conf; sed -i \"s/:80>/:${PORT}>/\" /etc/apache2/sites-available/000-default.conf; chown -R www-data:www-data storage bootstrap/cache; exec apache2-foreground"]
+CMD ["sh", "-c", "set -e; PORT=${PORT:-10000}; php artisan migrate --force -vvv; sed -i \"s/Listen 80/Listen ${PORT}/\" /etc/apache2/ports.conf; sed -i \"s/:80>/:${PORT}>/\" /etc/apache2/sites-available/000-default.conf; chown -R www-data:www-data storage bootstrap/cache; exec apache2-foreground"]
