@@ -51,7 +51,7 @@ function normalizeProduct(product) {
 /**
  * Public products.
  * Locale: fr | en | ar
- * Always fetch fresh data.
+ * Revalidate every 5 minutes.
  */
 export async function getPublicProducts(locale = "fr") {
   try {
@@ -64,7 +64,9 @@ export async function getPublicProducts(locale = "fr") {
         headers: {
           Accept: "application/json",
         },
-        cache: "no-store",
+        next: {
+          revalidate: 300,
+        },
       }
     );
 
@@ -89,7 +91,7 @@ export async function getPublicProducts(locale = "fr") {
 /**
  * Public product details.
  * Locale: fr | en | ar
- * Always fetch fresh data.
+ * Revalidate every 5 minutes.
  */
 export async function getPublicProduct(slug, locale = "fr") {
   try {
@@ -102,7 +104,9 @@ export async function getPublicProduct(slug, locale = "fr") {
         headers: {
           Accept: "application/json",
         },
-        cache: "no-store",
+        next: {
+          revalidate: 300,
+        },
       }
     );
 
