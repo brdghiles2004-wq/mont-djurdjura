@@ -34,30 +34,40 @@ use App\Http\Controllers\Api\Admin\AdminNotificationController;
 */
 
 Route::get('/debug-runtime', function (Request $request) {
+    $sessionConfigPath = config_path('session.php');
+
+    $sessionConfigContents = file_exists($sessionConfigPath)
+        ? file_get_contents($sessionConfigPath)
+        : '';
+
+    preg_match(
+        '~["\']same_site["\']\s*=>\s*["\']([^"\']+)["\']~',
+        $sessionConfigContents,
+        $sameSiteMatch
+    );
+
     return response()->json([
         'success' => true,
 
-        // Application
         'laravel' => app()->version(),
         'environment' => app()->environment(),
         'https' => $request->isSecure(),
 
-        // Configuration cache
         'config_cached' => app()->configurationIsCached(),
 
-        // Session environment values
         'env_session_same_site' => env('SESSION_SAME_SITE'),
         'config_session_same_site' => config('session.same_site'),
+
+        'session_config_file_exists' => file_exists($sessionConfigPath),
+        'session_config_file_same_site' => $sameSiteMatch[1] ?? null,
 
         'env_session_secure_cookie' => env('SESSION_SECURE_COOKIE'),
         'config_session_secure' => config('session.secure'),
 
-        // Session configuration
         'session_driver' => config('session.driver'),
         'session_cookie' => config('session.cookie'),
         'session_domain' => config('session.domain'),
 
-        // Sanctum
         'sanctum_stateful' => config('sanctum.stateful'),
     ]);
 });
