@@ -34,6 +34,7 @@ use App\Http\Controllers\Api\Admin\AdminNotificationController;
 */
 
 Route::get('/debug-runtime', function (Request $request) {
+
     $sessionConfigPath = config_path('session.php');
 
     $sessionConfigContents = file_exists($sessionConfigPath)
@@ -41,12 +42,17 @@ Route::get('/debug-runtime', function (Request $request) {
         : '';
 
     preg_match(
-        '~["\']same_site["\']\s*=>\s*["\']([^"\']+)["\']~',
+        "~['\"]same_site['\"]\\s*=>\\s*['\"]([^'\"]+)['\"]~",
         $sessionConfigContents,
         $sameSiteMatch
     );
 
+    $sanctumRoute = app('router')
+        ->getRoutes()
+        ->getByName('sanctum.csrf-cookie');
+
     return response()->json([
+
         'success' => true,
 
         'laravel' => app()->version(),
@@ -69,6 +75,18 @@ Route::get('/debug-runtime', function (Request $request) {
         'session_domain' => config('session.domain'),
 
         'sanctum_stateful' => config('sanctum.stateful'),
+
+        'sanctum_route' => $sanctumRoute ? [
+            'uri' => $sanctumRoute->uri(),
+            'methods' => $sanctumRoute->methods(),
+            'action' => $sanctumRoute->getActionName(),
+            'middleware' => $sanctumRoute->gatherMiddleware(),
+        ] : null,
+
+        'app_providers' => array_keys(
+            array_filter(app()->getLoadedProviders())
+        ),
+
     ]);
 });
 
