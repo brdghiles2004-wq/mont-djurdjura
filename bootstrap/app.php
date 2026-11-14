@@ -1,12 +1,13 @@
 
 <?php
 
+use App\Http\Middleware\EnsureUserHasPermission;
+use App\Http\Middleware\UseCrossSiteSessionCookies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Http\Request;
-use App\Http\Middleware\EnsureUserHasPermission;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -32,6 +33,11 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Sanctum SPA authentication
         $middleware->statefulApi();
+
+        // Apply cross-site session cookie settings for trusted frontend requests.
+        $middleware->api(append: [
+            UseCrossSiteSessionCookies::class,
+        ]);
 
         // CSRF exceptions
         $middleware->validateCsrfTokens(except: [
