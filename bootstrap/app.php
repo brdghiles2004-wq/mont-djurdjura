@@ -4,6 +4,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Middleware\HandleCors;
 use App\Http\Middleware\EnsureUserHasPermission;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -14,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+
+        // Explicitly ensure CORS runs before other global middleware.
+        $middleware->prepend(HandleCors::class);
 
         // Keep Sanctum SPA authentication for the Admin dashboard.
         $middleware->statefulApi();
