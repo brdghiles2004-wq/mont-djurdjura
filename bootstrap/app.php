@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\HandleCors;
+use Illuminate\Http\Request;
 use App\Http\Middleware\EnsureUserHasPermission;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -16,17 +17,28 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
 
-        // Explicitly ensure CORS runs before other global middleware.
+        // Trust the reverse proxy headers from Render.
+        $middleware->trustProxies(
+            at: '*',
+            headers: Request::HEADER_X_FORWARDED_FOR |
+                Request::HEADER_X_FORWARDED_HOST |
+                Request::HEADER_X_FORWARDED_PORT |
+                Request::HEADER_X_FORWARDED_PROTO |
+                Request::HEADER_X_FORWARDED_AWS_ELB
+        );
+
+        // CORS
         $middleware->prepend(HandleCors::class);
 
-        // Keep Sanctum SPA authentication for the Admin dashboard.
+        // Sanctum SPA authentication
         $middleware->statefulApi();
 
-        // Exclude only the public devis submission endpoint from CSRF.
+        // CSRF exceptions
         $middleware->validateCsrfTokens(except: [
             'api/devis',
         ]);
 
+        // Custom middleware aliases
         $middleware->alias([
             'permission' => EnsureUserHasPermission::class,
         ]);
