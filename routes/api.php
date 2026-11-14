@@ -30,6 +30,15 @@ use App\Http\Controllers\Api\Admin\AdminNotificationController;
    PUBLIC API
 ========================================= */
 
+// Health Check
+Route::get('/health', function () {
+    return response()->json([
+        'success' => true,
+        'app' => 'Mont Djurdjura API',
+        'status' => 'healthy',
+    ]);
+});
+
 // Contact
 Route::post('/contact', [ContactController::class, 'store'])
     ->middleware('throttle:10,1');
