@@ -27,7 +27,12 @@ WORKDIR /var/www/html
 
 COPY . .
 
-RUN mkdir -p bootstrap/cache storage/framework/cache storage/framework/sessions storage/framework/views storage/logs
+RUN mkdir -p \
+    bootstrap/cache \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs
 
 RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
@@ -39,4 +44,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 10000
 
-CMD ["sh", "-c", "set -e; PORT=${PORT:-10000}; sed -i \"s/Listen 80/Listen ${PORT}/\" /etc/apache2/ports.conf; sed -i \"s/:80>/:${PORT}>/\" /etc/apache2/sites-available/000-default.conf; chown -R www-data:www-data storage bootstrap/cache; exec apache2-foreground"]
+CMD ["sh", "-c", "set -e; PORT=${PORT:-10000}; php artisan migrate --force; sed -i \"s/Listen 80/Listen ${PORT}/\" /etc/apache2/ports.conf; sed -i \"s/:80>/:${PORT}>/\" /etc/apache2/sites-available/000-default.conf; chown -R www-data:www-data storage bootstrap/cache; exec apache2-foreground"]
