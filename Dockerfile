@@ -37,11 +37,6 @@ RUN sed -ri 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-availabl
 
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-
-RUN sed -i 's/\r$//' /usr/local/bin/docker-entrypoint.sh && chmod +x /usr/local/bin/docker-entrypoint.sh
-
 EXPOSE 10000
 
-ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["apache2-foreground"]
+CMD ["sh", "-c", "set -e; PORT=${PORT:-10000}; sed -i \"s/Listen 80/Listen ${PORT}/\" /etc/apache2/ports.conf; sed -i \"s/:80>/:${PORT}>/\" /etc/apache2/sites-available/000-default.conf; chown -R www-data:www-data storage bootstrap/cache; exec apache2-foreground"]
