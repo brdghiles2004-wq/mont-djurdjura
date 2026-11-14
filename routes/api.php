@@ -27,30 +27,47 @@ use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Admin\AdminNotificationController;
 
 
-/* =========================================
-   TEMPORARY DEPLOYMENT DIAGNOSTIC
-========================================= */
+/*
+|--------------------------------------------------------------------------
+| TEMPORARY DEPLOYMENT DIAGNOSTIC
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/debug-runtime', function (Request $request) {
     return response()->json([
         'success' => true,
+
+        // Application
         'laravel' => app()->version(),
         'environment' => app()->environment(),
         'https' => $request->isSecure(),
+
+        // Configuration cache
+        'config_cached' => app()->configurationIsCached(),
+
+        // Session environment values
+        'env_session_same_site' => env('SESSION_SAME_SITE'),
+        'config_session_same_site' => config('session.same_site'),
+
+        'env_session_secure_cookie' => env('SESSION_SECURE_COOKIE'),
+        'config_session_secure' => config('session.secure'),
+
+        // Session configuration
         'session_driver' => config('session.driver'),
         'session_cookie' => config('session.cookie'),
         'session_domain' => config('session.domain'),
-        'session_secure' => config('session.secure'),
-        'session_same_site' => config('session.same_site'),
-        'session_started' => app()->bound('session.store'),
+
+        // Sanctum
         'sanctum_stateful' => config('sanctum.stateful'),
     ]);
 });
 
 
-/* =========================================
-   PUBLIC API
-========================================= */
+/*
+|--------------------------------------------------------------------------
+| PUBLIC API
+|--------------------------------------------------------------------------
+*/
 
 // Health Check
 Route::get('/health', function () {
@@ -73,33 +90,36 @@ Route::post('/devis', [DevisController::class, 'store'])
 Route::get('/products', [PublicProductController::class, 'index']);
 Route::get('/products/{slug}', [PublicProductController::class, 'show']);
 
-// Gallery
+// Public Gallery
 Route::get('/gallery', [GalleryController::class, 'publicIndex']);
 
 // SEO
 Route::get('/seo/settings', [PublicSeoController::class, 'settings']);
 Route::get('/seo/pages/{pageKey}', [PublicSeoController::class, 'page']);
 
-// Settings
+// Public Settings
 Route::get('/settings', [PublicSettingController::class, 'index']);
 
 
-/* =========================================
-   ADMIN AUTHENTICATION
-========================================= */
+/*
+|--------------------------------------------------------------------------
+| ADMIN AUTHENTICATION
+|--------------------------------------------------------------------------
+*/
 
 Route::post('/admin/login', [AuthController::class, 'login'])
     ->middleware('throttle:5,1');
 
 
-/* =========================================
-   PROTECTED ADMIN API
-========================================= */
+/*
+|--------------------------------------------------------------------------
+| PROTECTED ADMIN API
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
 
-    /* Authentication & Profile */
-
+    // Authentication & Profile
     Route::get('/user', [AuthController::class, 'user']);
 
     Route::put('/profile', [AuthController::class, 'updateProfile']);
@@ -108,16 +128,14 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
 
-    /* Dashboard */
-
+    // Dashboard
     Route::get('/dashboard', [
         AdminDashboardController::class,
         'index',
     ]);
 
 
-    /* Notifications */
-
+    // Notifications
     Route::get('/notifications', [
         AdminNotificationController::class,
         'index',
@@ -134,8 +152,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     ]);
 
 
-    /* Products */
-
+    // Products
     Route::get('/products', [ProductController::class, 'index'])
         ->middleware('permission:products.view');
 
@@ -152,8 +169,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         ->middleware('permission:products.delete');
 
 
-    /* Categories */
-
+    // Categories
     Route::get('/categories', [CategoryController::class, 'index'])
         ->middleware('permission:categories.view');
 
@@ -170,8 +186,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         ->middleware('permission:categories.delete');
 
 
-    /* Clients */
-
+    // Clients
     Route::get('/clients', [ClientController::class, 'index'])
         ->middleware('permission:clients.view');
 
@@ -188,8 +203,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         ->middleware('permission:clients.delete');
 
 
-    /* Devis */
-
+    // Devis
     Route::get('/devis', [DevisRequestController::class, 'index'])
         ->middleware('permission:devis.view');
 
@@ -203,8 +217,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         ->middleware('permission:devis.reply');
 
 
-    /* Messages */
-
+    // Messages
     Route::get('/messages', [ContactMessageController::class, 'index'])
         ->middleware('permission:messages.view');
 
@@ -218,8 +231,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         ->middleware('permission:messages.reply');
 
 
-    /* Emails */
-
+    // Emails
     Route::get('/emails', [EmailController::class, 'index'])
         ->middleware('permission:emails.view');
 
@@ -230,8 +242,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         ->middleware('permission:emails.resend');
 
 
-    /* Gallery */
-
+    // Admin Gallery
     Route::get('/gallery', [GalleryController::class, 'index'])
         ->middleware('permission:gallery.view');
 
@@ -248,8 +259,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         ->middleware('permission:gallery.delete');
 
 
-    /* SEO */
-
+    // SEO
     Route::get('/seo/settings', [SiteSeoSettingController::class, 'show'])
         ->middleware('permission:seo.view');
 
@@ -263,8 +273,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         ->middleware('permission:seo.update');
 
 
-    /* Settings */
-
+    // Settings
     Route::get('/settings', [SiteSettingController::class, 'show'])
         ->middleware('permission:settings.view');
 
@@ -272,8 +281,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         ->middleware('permission:settings.update');
 
 
-    /* Roles */
-
+    // Roles
     Route::get('/roles', [RoleController::class, 'index'])
         ->middleware('permission:roles.view');
 
@@ -286,8 +294,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::delete('/roles/{role}', [RoleController::class, 'destroy']);
 
 
-    /* Users */
-
+    // Users
     Route::get('/users', [UserController::class, 'index'])
         ->middleware('permission:users.view');
 
