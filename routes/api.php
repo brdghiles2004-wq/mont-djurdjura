@@ -2,6 +2,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\DevisController;
@@ -24,6 +25,27 @@ use App\Http\Controllers\Api\Admin\SiteSettingController;
 use App\Http\Controllers\Api\Admin\RoleController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Admin\AdminNotificationController;
+
+
+/* =========================================
+   TEMPORARY DEPLOYMENT DIAGNOSTIC
+========================================= */
+
+Route::get('/debug-runtime', function (Request $request) {
+    return response()->json([
+        'success' => true,
+        'laravel' => app()->version(),
+        'environment' => app()->environment(),
+        'https' => $request->isSecure(),
+        'session_driver' => config('session.driver'),
+        'session_cookie' => config('session.cookie'),
+        'session_domain' => config('session.domain'),
+        'session_secure' => config('session.secure'),
+        'session_same_site' => config('session.same_site'),
+        'session_started' => app()->bound('session.store'),
+        'sanctum_stateful' => config('sanctum.stateful'),
+    ]);
+});
 
 
 /* =========================================
@@ -261,8 +283,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::put('/roles/{role}', [RoleController::class, 'update'])
         ->middleware('permission:roles.update');
 
-    Route::delete('/roles/{role}', [RoleController::class, 'destroy'])
-        ->middleware('permission:roles.delete');
+    Route::delete('/roles/{role}', [RoleController::class, 'destroy']);
 
 
     /* Users */
@@ -276,7 +297,6 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::put('/users/{user}', [UserController::class, 'update'])
         ->middleware('permission:users.update');
 
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])
-        ->middleware('permission:users.delete');
+    Route::delete('/users/{user}', [UserController::class, 'destroy']);
 
 });
