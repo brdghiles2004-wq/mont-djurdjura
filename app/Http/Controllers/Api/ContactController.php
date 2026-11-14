@@ -30,8 +30,8 @@ class ContactController extends Controller
             'message' => ['required', 'string', 'max:10000'],
         ]);
 
-        [$client, $contactMessage] = DB::transaction(
-            function () use ($validated) {
+        try {
+            $contactMessage = DB::transaction(function () use ($validated) {
                 $client = Client::syncFromSubmission($validated);
 
                 $contactMessage = new ContactMessage([
@@ -47,78 +47,87 @@ class ContactController extends Controller
                 $contactMessage->client()->associate($client);
                 $contactMessage->save();
 
-                return [$client, $contactMessage];
-            }
-        );
+                return $contactMessage;
+            });
 
-        try {
-            $adminNotificationService->send(
-                'messages.view',
-                'contact',
-                'Nouveau message de contact',
-                "{$contactMessage->name} — {$contactMessage->subject} (Réf. #{$contactMessage->id})",
-                'messages',
-                (int) $contactMessage->id
-            );
-        } catch (Throwable $e) {
-            Log::error('Contact admin notification failed', [
-                'contact_message_id' => $contactMessage->id,
-                'error' => $e->getMessage(),
-            ]);
-        }
-
-        $emailNotificationSent = false;
-
-        $body = "Nouveau message de contact - Mont Djurdjura\n\n";
-        $body .= "Référence : #{$contactMessage->id}\n";
-        $body .= "Nom : {$contactMessage->name}\n";
-        $body .= "Entreprise : " . ($contactMessage->company ?: 'Non renseignée') . "\n";
-        $body .= "Email : {$contactMessage->email}\n";
-        $body .= "Téléphone : " . ($contactMessage->phone ?: 'Non renseigné') . "\n";
-        $body .= "Sujet : {$contactMessage->subject}\n\n";
-        $body .= "Message :\n{$contactMessage->message}\n";
-
-        // L'adresse destinataire est récupérée depuis le Dashboard.
-        // Si elle est absente, on utilise l'adresse de secours de la configuration.
-        $recipient = SiteSetting::query()->value('official_email')
-            ?: config('mail.contact_to');
-
-        if ($recipient) {
             try {
-                $emailLogService->sendRaw([
-                    'recipient' => $recipient,
-                    'subject' => 'Nouveau message - Mont Djurdjura',
-                    'body' => $body,
-                    'type' => 'contact_notification',
-                    'related_type' => ContactMessage::class,
-                    'related_id' => $contactMessage->id,
-                    'reply_to' => [
-                        'email' => $contactMessage->email,
-                        'name' => $contactMessage->name,
-                    ],
-                ]);
-
-                $emailNotificationSent = true;
+                $adminNotificationService->send(
+                    'messages.view',
+                    'contact',
+                    'Nouveau message de contact',
+                    "{$contactMessage->name} — {$contactMessage->subject} (Réf. #{$contactMessage->id})",
+                    'messages',
+                    (int) $contactMessage->id
+                );
             } catch (Throwable $e) {
-                Log::error('Contact email notification failed', [
+                Log::error('Contact admin notification failed', [
                     'contact_message_id' => $contactMessage->id,
-                    'recipient' => $recipient,
-                    'error' => $e->getMessage(),
+                    'exception' => $e,
                 ]);
             }
-        } else {
-            Log::warning('Contact notification email skipped: no recipient configured.', [
-                'contact_message_id' => $contactMessage->id,
-            ]);
-        }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Votre message a été envoyé avec succès.',
-            'data' => [
-                'id' => $contactMessage->id,
-                'email_notification_sent' => $emailNotificationSent,
-            ],
-        ], 201);
+            $emailNotificationSent = false;
+
+            $body = "Nouveau message de contact - Mont Djurdjura\n\n";
+            $body .= "Référence : #{$contactMessage->id}\n";
+            $body .= "Nom : {$contactMessage->name}\n";
+            $body .= "Entreprise : " . ($contactMessage->company ?: 'Non renseignée') . "\n";
+            $body .= "Email : {$contactMessage->email}\n";
+            $body .= "Téléphone : " . ($contactMessage->phone ?: 'Non renseigné') . "\n";
+            $body .= "Sujet : {$contactMessage->subject}\n\n";
+            $body .= "Message :\n{$contactMessage->message}\n";
+
+            $recipient = SiteSetting::query()->value('official_email')
+                ?: config('mail.contact_to');
+
+            if ($recipient) {
+                try {
+                    $emailLogService->sendRaw([
+                        'recipient' => $recipient,
+                        'subject' => 'Nouveau message - Mont Djurdjura',
+                        'body' => $body,
+                        'type' => 'contact_notification',
+                        'related_type' => ContactMessage::class,
+                        'related_id' => $contactMessage->id,
+                        'reply_to' => [
+                            'email' => $contactMessage->email,
+                            'name' => $contactMessage->name,
+                        ],
+                    ]);
+
+                    $emailNotificationSent = true;
+                } catch (Throwable $e) {
+                    Log::error('Contact email notification failed', [
+                        'contact_message_id' => $contactMessage->id,
+                        'exception' => $e,
+                    ]);
+                }
+            } else {
+                Log::warning('Contact notification email skipped: no recipient configured.', [
+                    'contact_message_id' => $contactMessage->id,
+                ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Votre message a été envoyé avec succès.',
+                'data' => [
+                    'id' => $contactMessage->id,
+                    'email_notification_sent' => $emailNotificationSent,
+                ],
+            ], 201);
+
+        } catch (Throwable $e) {
+            Log::error('Contact submission failed', [
+                'exception' => $e,
+                'request_path' => $request->path(),
+                'request_method' => $request->method(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Une erreur interne est survenue. Veuillez réessayer plus tard.',
+            ], 500);
+        }
     }
 }
