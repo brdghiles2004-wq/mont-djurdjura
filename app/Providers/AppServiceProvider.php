@@ -19,5 +19,10 @@ class AppServiceProvider extends ServiceProvider
                 'session.secure' => true,
             ]);
         }
+
+        // Temporary diagnostic: capture session config immediately after this provider boots.
+        config([
+            'app.debug_session_same_site_after_provider' => config('session.same_site'),
+        ]);
     }
 }

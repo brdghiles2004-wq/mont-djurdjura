@@ -64,6 +64,8 @@ Route::get('/debug-runtime', function (Request $request) {
         'env_session_same_site' => env('SESSION_SAME_SITE'),
         'config_session_same_site' => config('session.same_site'),
 
+        'session_same_site_after_provider' => config('app.debug_session_same_site_after_provider'),
+
         'session_config_file_exists' => file_exists($sessionConfigPath),
         'session_config_file_same_site' => $sameSiteMatch[1] ?? null,
 
