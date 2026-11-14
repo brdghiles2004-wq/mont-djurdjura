@@ -1,4 +1,3 @@
-
 FROM php:8.3-apache
 
 RUN apt-get update && apt-get install -y \
@@ -18,7 +17,7 @@ RUN apt-get update && apt-get install -y \
         opcache \
         mbstring \
         curl \
-    && a2enmod rewrite headers \
+    && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -43,17 +42,6 @@ RUN composer install \
 RUN sed -ri 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf \
     && printf '<Directory /var/www/html/public>\nAllowOverride All\nRequire all granted\n</Directory>\n' > /etc/apache2/conf-available/laravel.conf \
     && a2enconf laravel
-
-RUN printf '%s\n' \
-    'Header onsuccess unset Access-Control-Allow-Origin' \
-    'Header always unset Access-Control-Allow-Origin' \
-    'Header always set Access-Control-Allow-Origin "https://mont-djurdjura.vercel.app"' \
-    'Header always set Access-Control-Allow-Credentials "true"' \
-    'Header always set Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"' \
-    'Header always set Access-Control-Allow-Headers "Accept, Content-Type, X-XSRF-TOKEN, X-Requested-With, Authorization"' \
-    'Header always merge Vary "Origin"' \
-    > /etc/apache2/conf-available/cors.conf \
-    && a2enconf cors
 
 RUN chown -R www-data:www-data storage bootstrap/cache
 
