@@ -5,7 +5,6 @@ use App\Http\Middleware\UseCrossSiteSessionCookies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -17,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
 
-        // Trust the reverse proxy headers from Render.
+        // Trust reverse proxy headers from Render.
         $middleware->trustProxies(
             at: '*',
             headers: Request::HEADER_X_FORWARDED_FOR |
@@ -27,27 +26,27 @@ return Application::configure(basePath: dirname(__DIR__))
                 Request::HEADER_X_FORWARDED_AWS_ELB
         );
 
-        // CORS
-        $middleware->prepend(HandleCors::class);
-
-        // Sanctum SPA authentication
+        // Sanctum SPA authentication.
         $middleware->statefulApi();
 
-        // Apply cross-site session cookie settings for trusted frontend requests.
+        // Cross-site session cookie settings.
         $middleware->api(append: [
             UseCrossSiteSessionCookies::class,
         ]);
 
-        // CSRF exceptions
+        // Public forms do not require CSRF session authentication.
+        // Admin authentication remains protected.
         $middleware->validateCsrfTokens(except: [
+            'api/contact',
             'api/devis',
         ]);
 
-        // Custom middleware aliases
+        // Custom middleware aliases.
         $middleware->alias([
             'permission' => EnsureUserHasPermission::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
-    })->create();
+    })
+    ->create();
