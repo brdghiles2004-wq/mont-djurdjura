@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
+use RuntimeException;
 
 class GalleryController extends Controller
 {
@@ -59,7 +60,7 @@ class GalleryController extends Controller
     }
 
     /**
-     * Store a new gallery image.
+     * Store a new gallery image in Cloudinary.
      */
     public function store(Request $request)
     {
@@ -77,7 +78,7 @@ class GalleryController extends Controller
             'is_active' => ['sometimes', 'boolean'],
         ]);
 
-        $imagePath = $request->file('image')->store('gallery', 'public');
+        $imagePath = $this->uploadImage($request->file('image'));
 
         $gallery = Gallery::create([
             'title' => $validated['title'],
@@ -115,22 +116,17 @@ class GalleryController extends Controller
             'is_active' => ['sometimes', 'boolean'],
         ]);
 
-        $oldImagePath = null;
-
         if ($request->hasFile('image')) {
-            $oldImagePath = $gallery->image_path;
-
-            $validated['image_path'] = $request->file('image')
-                ->store('gallery', 'public');
+            // Upload the new image before updating the database.
+            // Keep the old Cloudinary image untouched.
+            $validated['image_path'] = $this->uploadImage(
+                $request->file('image')
+            );
 
             unset($validated['image']);
         }
 
         $gallery->update($validated);
-
-        if ($oldImagePath) {
-            Storage::disk('public')->delete($oldImagePath);
-        }
 
         return response()->json([
             'success' => true,
@@ -144,7 +140,14 @@ class GalleryController extends Controller
      */
     public function destroy(Gallery $gallery)
     {
-        Storage::disk('public')->delete($gallery->image_path);
+        // Delete only old local files.
+        // Do not delete Cloudinary assets here.
+        if (
+            $gallery->image_path &&
+            !$this->isAbsoluteUrl($gallery->image_path)
+        ) {
+            Storage::disk('public')->delete($gallery->image_path);
+        }
 
         $gallery->delete();
 
@@ -173,16 +176,48 @@ class GalleryController extends Controller
     }
 
     /**
+     * Upload an image to Cloudinary and return its URL.
+     */
+    private function uploadImage(UploadedFile $file): string
+    {
+        $disk = Storage::disk('cloudinary');
+
+        $path = $disk->putFile('gallery', $file);
+
+        if (!$path) {
+            throw new RuntimeException(
+                'Cloudinary gallery image upload failed.'
+            );
+        }
+
+        return $disk->url($path);
+    }
+
+    /**
+     * Check whether a path is already an absolute URL.
+     */
+    private function isAbsoluteUrl(string $value): bool
+    {
+        return preg_match('/^https?:\/\//i', $value) === 1;
+    }
+
+    /**
      * Format gallery response.
      */
     private function formatGallery(Gallery $gallery): array
     {
+        $imagePath = $gallery->image_path;
+
+        $imageUrl = $this->isAbsoluteUrl($imagePath)
+            ? $imagePath
+            : Storage::disk('public')->url($imagePath);
+
         return [
             'id' => $gallery->id,
             'title' => $gallery->title,
             'description' => $gallery->description,
-            'image_path' => $gallery->image_path,
-            'image_url' => Storage::disk('public')->url($gallery->image_path),
+            'image_path' => $imagePath,
+            'image_url' => $imageUrl,
             'alt_text' => $gallery->alt_text,
             'sort_order' => $gallery->sort_order,
             'is_active' => $gallery->is_active,

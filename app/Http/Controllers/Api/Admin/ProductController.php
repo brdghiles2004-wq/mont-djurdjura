@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductTranslation;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use RuntimeException;
 
 class ProductController extends Controller
 {
@@ -86,8 +88,9 @@ class ProductController extends Controller
         );
 
         if ($request->hasFile('main_image')) {
-            $validated['main_image'] = $request->file('main_image')
-                ->store('products', 'public');
+            $validated['main_image'] = $this->uploadImage(
+                $request->file('main_image')
+            );
         }
 
         $product = Product::create($validated);
@@ -172,12 +175,10 @@ class ProductController extends Controller
         }
 
         if ($request->hasFile('main_image')) {
-            if ($product->main_image) {
-                Storage::disk('public')->delete($product->main_image);
-            }
-
-            $validated['main_image'] = $request->file('main_image')
-                ->store('products', 'public');
+            // Upload the new image first. Keep the old image untouched.
+            $validated['main_image'] = $this->uploadImage(
+                $request->file('main_image')
+            );
         }
 
         $product->update($validated);
@@ -194,7 +195,12 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        if ($product->main_image) {
+        // Delete only legacy local files.
+        // Cloudinary assets are intentionally left untouched.
+        if (
+            $product->main_image &&
+            !$this->isAbsoluteUrl($product->main_image)
+        ) {
             Storage::disk('public')->delete($product->main_image);
         }
 
@@ -203,6 +209,24 @@ class ProductController extends Controller
         return response()->json([
             'message' => 'Product deleted successfully.',
         ]);
+    }
+
+    private function uploadImage(UploadedFile $file): string
+    {
+        $disk = Storage::disk('cloudinary');
+
+        $path = $disk->putFile('products', $file);
+
+        if (!$path) {
+            throw new RuntimeException('Cloudinary image upload failed.');
+        }
+
+        return $disk->url($path);
+    }
+
+    private function isAbsoluteUrl(string $value): bool
+    {
+        return preg_match('/^https?:\/\//i', $value) === 1;
     }
 
     private function saveTranslations(Product $product, array $translations): void
