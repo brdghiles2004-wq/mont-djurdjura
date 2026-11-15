@@ -81,7 +81,8 @@ class SiteSettingController extends Controller
             'fax' => ['nullable', 'string', 'max:30'],
             'website' => ['nullable', 'string', 'max:255'],
 
-            'working_days' => ['required', 'array'],
+            // السماح بمصفوفة فارغة عند عدم اختيار أيام العمل.
+            'working_days' => ['present', 'array'],
             'working_days.*' => [
                 'string',
                 'in:monday,tuesday,wednesday,thursday,friday,saturday,sunday',
