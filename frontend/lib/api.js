@@ -56,7 +56,7 @@ export async function getPublicProducts(locale = "fr") {
       {
         method: "GET",
         headers: { Accept: "application/json" },
-        next: { revalidate: 300 },
+        cache: "no-store",
       }
     );
 
@@ -87,7 +87,7 @@ export async function getPublicProduct(slug, locale = "fr") {
       {
         method: "GET",
         headers: { Accept: "application/json" },
-        next: { revalidate: 300 },
+        cache: "no-store",
       }
     );
 
