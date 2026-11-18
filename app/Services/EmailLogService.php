@@ -63,9 +63,7 @@ class EmailLogService
                 'status' => 'sent',
                 'sent_at' => now(),
                 'error_message' => null,
-                'message_id' => $sentMessage && method_exists($sentMessage, 'getMessageId')
-                    ? $sentMessage->getMessageId()
-                    : null,
+                'message_id' => $this->extractMessageId($sentMessage),
             ]);
         } catch (Throwable $exception) {
             $log->update([
@@ -131,9 +129,8 @@ class EmailLogService
                 'status' => 'sent',
                 'sent_at' => now(),
                 'error_message' => null,
-                'message_id' => $sentMessage && method_exists($sentMessage, 'getMessageId')
-                    ? $sentMessage->getMessageId()
-                    : $log->message_id,
+                'message_id' => $this->extractMessageId($sentMessage)
+                    ?? $log->message_id,
             ]);
         } catch (Throwable $exception) {
             $log->update([
@@ -149,5 +146,36 @@ class EmailLogService
         }
 
         return $log->fresh();
+    }
+
+    /**
+     * Extract the provider message ID when available.
+     */
+    private function extractMessageId(mixed $sentMessage): ?string
+    {
+        if (!$sentMessage) {
+            return null;
+        }
+
+        if (method_exists($sentMessage, 'getSymfonySentMessage')) {
+            $symfonyMessage = $sentMessage->getSymfonySentMessage();
+            $originalMessage = $symfonyMessage->getOriginalMessage();
+
+            if (method_exists($originalMessage, 'getHeaders')) {
+                $header = $originalMessage
+                    ->getHeaders()
+                    ->get('X-Resend-Email-ID');
+
+                if ($header) {
+                    return trim($header->getBodyAsString());
+                }
+            }
+        }
+
+        if (method_exists($sentMessage, 'getMessageId')) {
+            return $sentMessage->getMessageId();
+        }
+
+        return null;
     }
 }
