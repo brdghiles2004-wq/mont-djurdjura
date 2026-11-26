@@ -1,4 +1,4 @@
-
+﻿
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://mont-djurdjura-api.onrender.com/api";
@@ -56,7 +56,7 @@ export async function getPublicProducts(locale = "fr") {
       {
         method: "GET",
         headers: { Accept: "application/json" },
-        next: { revalidate: 300 },
+        next: { revalidate: 10 },
       }
     );
 
@@ -87,7 +87,7 @@ export async function getPublicProduct(slug, locale = "fr") {
       {
         method: "GET",
         headers: { Accept: "application/json" },
-        next: { revalidate: 300 },
+        next: { revalidate: 10 },
       }
     );
 
@@ -228,3 +228,4 @@ export async function logoutAdmin() {
     method: "POST",
   });
 }
+
