@@ -1,20 +1,45 @@
-
 .git
 .github
 .env
 .env.*
 !.env.example
 !.env.docker
+
 vendor
 node_modules
 frontend
+
+# Windows local storage junction
+/public/storage
+
+# Laravel runtime files
 storage/logs/*
 storage/framework/cache/*
 storage/framework/sessions/*
 storage/framework/views/*
 bootstrap/cache/*
+
+# Local databases
 database/*.sqlite
 database/*.sqlite-*
+
+# Migration backup files
+database/migrations/*.backup*
+
+# Other
 *.log
 .DS_Store
 Thumbs.db
+# Local backups
+*backup*
+frontend-backup/
+
+# Local audit and diagnostic files
+audit-hostinger/
+*SECURITY-AUDIT*.txt
+AUDIT-*.txt
+CORE-AUDIT.txt
+FULL-AUDIT.txt
+cloudinary-test.txt
+composer-install-log.txt
+curl.exe

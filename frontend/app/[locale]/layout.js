@@ -5,7 +5,7 @@ import "./../globals.css";
 
 const locales = ["fr", "en", "ar"];
 
-const SITE_URL = "https://www.montdjurdjura-dz.com";
+const SITE_URL = "https://mont-djurdjura.vercel.app";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({

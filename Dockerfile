@@ -46,6 +46,6 @@ RUN sed -ri 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-availabl
 
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-EXPOSE 10000
+EXPOSE 8080
 
-CMD ["sh", "-c", "set -e; PORT=${PORT:-10000}; php artisan migrate --force -vvv; rm -rf public/storage; php artisan storage:link; sed -i \"s/Listen 80/Listen ${PORT}/\" /etc/apache2/ports.conf; sed -i \"s/:80>/:${PORT}>/\" /etc/apache2/sites-available/000-default.conf; chown -R www-data:www-data storage bootstrap/cache; exec apache2-foreground"]
+CMD ["sh", "-c", "set -e; PORT=${PORT:-10000}; if [ -L public/storage ]; then echo 'Storage symlink already exists'; elif [ -e public/storage ]; then echo 'WARNING: public/storage exists and is not a symlink; preserving it'; else php artisan storage:link; fi; sed -i \"s/Listen 80/Listen ${PORT}/\" /etc/apache2/ports.conf; sed -i \"s/:80>/:${PORT}>/\" /etc/apache2/sites-available/000-default.conf; chown -R www-data:www-data storage bootstrap/cache; exec apache2-foreground"]

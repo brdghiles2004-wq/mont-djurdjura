@@ -3,7 +3,7 @@ import { getPublicProducts } from "@/lib/api";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://www.montdjurdjura-dz.com";
+  "https://mont-djurdjura.vercel.app";
 
 const locales = ["fr", "en", "ar"];
 

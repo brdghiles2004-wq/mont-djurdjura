@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -9,15 +8,26 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('contact_messages', function (Blueprint $table) {
-            $table->longText('reply_message')->nullable();
+        Schema::create('contact_messages', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('name');
+            $table->string('company')->nullable();
+            $table->string('email');
+            $table->string('phone', 30)->nullable();
+
+            $table->string('subject');
+            $table->longText('message');
+
+            $table->string('status')->default('new');
+            $table->timestamp('read_at')->nullable();
+
+            $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::table('contact_messages', function (Blueprint $table) {
-            $table->dropColumn('reply_message');
-        });
+        Schema::dropIfExists('contact_messages');
     }
 };
