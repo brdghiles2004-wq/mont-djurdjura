@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -20,6 +19,7 @@ import {
   Link2,
   Eye,
   EyeOff,
+  ChevronDown,
 } from "lucide-react";
 
 import "./settings-manager.css";
@@ -74,7 +74,7 @@ function normalizeSocialLinks(value) {
   if (!Array.isArray(value)) return [];
 
   return value.map((item) => ({
-    platform: item?.platform || "facebook",
+    platform: item?.platform || "",
     label: item?.label || "",
     url: item?.url || "",
     enabled: item?.enabled === true || item?.enabled === 1,
@@ -124,6 +124,7 @@ export default function SettingsManager() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [expandedSocialIndex, setExpandedSocialIndex] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -197,12 +198,14 @@ export default function SettingsManager() {
   }
 
   function addSocialLink() {
+    const newIndex = form.social_links.length;
+
     setForm((previous) => ({
       ...previous,
       social_links: [
         ...previous.social_links,
         {
-          platform: "facebook",
+          platform: "",
           label: "",
           url: "",
           enabled: true,
@@ -210,6 +213,7 @@ export default function SettingsManager() {
       ],
     }));
 
+    setExpandedSocialIndex(newIndex);
     setError("");
     setSuccess("");
   }
@@ -235,6 +239,11 @@ export default function SettingsManager() {
         (_, itemIndex) => itemIndex !== index
       ),
     }));
+
+    setExpandedSocialIndex((current) => {
+      if (current === null || current === index) return null;
+      return current > index ? current - 1 : current;
+    });
 
     setError("");
     setSuccess("");
@@ -270,7 +279,16 @@ export default function SettingsManager() {
     for (let index = 0; index < form.social_links.length; index++) {
       const item = form.social_links[index];
 
+      if (!item.platform) {
+        setExpandedSocialIndex(index);
+        setError(
+          `Veuillez choisir une plateforme pour le réseau social N° ${index + 1}.`
+        );
+        return;
+      }
+
       if (!item.url.trim()) {
+        setExpandedSocialIndex(index);
         setError(
           `Veuillez saisir le lien du réseau social N° ${index + 1}.`
         );
@@ -278,6 +296,7 @@ export default function SettingsManager() {
       }
 
       if (!isValidSocialUrl(item.url.trim())) {
+        setExpandedSocialIndex(index);
         setError(
           `Le lien du réseau social N° ${index + 1} doit commencer par http:// ou https://.`
         );
@@ -288,6 +307,7 @@ export default function SettingsManager() {
         item.platform === "custom" &&
         !item.label.trim()
       ) {
+        setExpandedSocialIndex(index);
         setError(
           `Veuillez saisir le nom de la plateforme N° ${index + 1}.`
         );
@@ -325,6 +345,7 @@ export default function SettingsManager() {
         setForm(normalizeSettings(response.data));
       }
 
+      setExpandedSocialIndex(null);
       setSuccess(
         response?.message || "Paramètres enregistrés avec succès."
       );
@@ -634,127 +655,177 @@ export default function SettingsManager() {
             </div>
           ) : (
             <div className="sm-social-list">
-              {form.social_links.map((item, index) => (
-                <div className="sm-social-item" key={index}>
-                  <div className="sm-social-item-top">
-                    <div className="sm-social-number">
-                      <Link2 size={16} />
-                      <span>Réseau {index + 1}</span>
-                    </div>
+              {form.social_links.map((item, index) => {
+                const isExpanded = expandedSocialIndex === index;
+                const selectedPlatform = SOCIAL_PLATFORMS.find(
+                  (platform) => platform.value === item.platform
+                );
 
-                    <button
-                      type="button"
-                      className="sm-remove-social"
-                      onClick={() => removeSocialLink(index)}
-                      aria-label={`Supprimer le réseau ${index + 1}`}
-                      title="Supprimer"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-
-                  <div className="sm-social-fields">
-                    <div className="sm-field">
-                      <label htmlFor={`social-platform-${index}`}>
-                        Plateforme
-                      </label>
-
-                      <select
-                        id={`social-platform-${index}`}
-                        value={item.platform}
-                        onChange={(event) =>
-                          updateSocialLink(
-                            index,
-                            "platform",
-                            event.target.value
+                return (
+                  <div
+                    className={`sm-social-item ${
+                      isExpanded ? "is-expanded" : ""
+                    }`}
+                    key={index}
+                  >
+                    <div className="sm-social-item-top">
+                      <button
+                        type="button"
+                        className="sm-social-accordion-trigger"
+                        onClick={() =>
+                          setExpandedSocialIndex((current) =>
+                            current === index ? null : index
                           )
                         }
+                        aria-expanded={isExpanded}
+                        aria-controls={`social-panel-${index}`}
                       >
-                        {SOCIAL_PLATFORMS.map((platform) => (
-                          <option
-                            key={platform.value}
-                            value={platform.value}
-                          >
-                            {platform.label}
-                          </option>
-                        ))}
-                      </select>
+                        <span className="sm-social-number">
+                          <Link2 size={16} />
+                          <span>
+                            {selectedPlatform?.label ||
+                              (item.platform === "custom"
+                                ? item.label || "Autre plateforme"
+                                : "Choisir une plateforme")}
+                          </span>
+                          <span className="sm-social-index">
+                            Réseau {index + 1}
+                          </span>
+                        </span>
+
+                        <ChevronDown
+                          size={18}
+                          className={`sm-social-chevron ${
+                            isExpanded ? "rotated" : ""
+                          }`}
+                        />
+                      </button>
+
+                      <button
+                        type="button"
+                        className="sm-remove-social"
+                        onClick={() => removeSocialLink(index)}
+                        aria-label={`Supprimer le réseau ${index + 1}`}
+                        title="Supprimer"
+                      >
+                        <Trash2 size={16} />
+                      </button>
                     </div>
 
-                    {item.platform === "custom" && (
-                      <div className="sm-field">
-                        <label htmlFor={`social-label-${index}`}>
-                          Nom de la plateforme
-                        </label>
+                    {isExpanded && (
+                      <div
+                        className="sm-social-panel"
+                        id={`social-panel-${index}`}
+                      >
+                        <div className="sm-social-fields">
+                          <div className="sm-field">
+                            <label htmlFor={`social-platform-${index}`}>
+                              Plateforme
+                            </label>
 
-                        <input
-                          id={`social-label-${index}`}
-                          type="text"
-                          value={item.label}
-                          onChange={(event) =>
-                            updateSocialLink(
-                              index,
-                              "label",
-                              event.target.value
-                            )
-                          }
-                          placeholder="Ex. Pinterest"
-                          maxLength={50}
-                        />
+                            <select
+                              id={`social-platform-${index}`}
+                              value={item.platform}
+                              onChange={(event) =>
+                                updateSocialLink(
+                                  index,
+                                  "platform",
+                                  event.target.value
+                                )
+                              }
+                            >
+                              <option value="">
+                                Choisir une plateforme...
+                              </option>
+
+                              {SOCIAL_PLATFORMS.map((platform) => (
+                                <option
+                                  key={platform.value}
+                                  value={platform.value}
+                                >
+                                  {platform.label}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+
+                          {item.platform === "custom" && (
+                            <div className="sm-field">
+                              <label htmlFor={`social-label-${index}`}>
+                                Nom de la plateforme
+                              </label>
+
+                              <input
+                                id={`social-label-${index}`}
+                                type="text"
+                                value={item.label}
+                                onChange={(event) =>
+                                  updateSocialLink(
+                                    index,
+                                    "label",
+                                    event.target.value
+                                  )
+                                }
+                                placeholder="Ex. Pinterest"
+                                maxLength={50}
+                              />
+                            </div>
+                          )}
+
+                          <div className="sm-field sm-social-url">
+                            <label htmlFor={`social-url-${index}`}>
+                              Lien de la page
+                            </label>
+
+                            <input
+                              id={`social-url-${index}`}
+                              type="url"
+                              value={item.url}
+                              onChange={(event) =>
+                                updateSocialLink(
+                                  index,
+                                  "url",
+                                  event.target.value
+                                )
+                              }
+                              placeholder="https://..."
+                              dir="ltr"
+                            />
+                          </div>
+                        </div>
+
+                        <label className="sm-social-toggle">
+                          <input
+                            type="checkbox"
+                            checked={item.enabled}
+                            onChange={(event) =>
+                              updateSocialLink(
+                                index,
+                                "enabled",
+                                event.target.checked
+                              )
+                            }
+                          />
+
+                          <span className="sm-social-toggle-icon">
+                            {item.enabled ? (
+                              <Eye size={15} />
+                            ) : (
+                              <EyeOff size={15} />
+                            )}
+                          </span>
+
+                          <span>
+                            {item.enabled
+                              ? "Activé — visible dans le Footer"
+                              : "Désactivé — masqué du Footer"}
+                          </span>
+                        </label>
                       </div>
                     )}
-
-                    <div className="sm-field sm-social-url">
-                      <label htmlFor={`social-url-${index}`}>
-                        Lien de la page
-                      </label>
-
-                      <input
-                        id={`social-url-${index}`}
-                        type="url"
-                        value={item.url}
-                        onChange={(event) =>
-                          updateSocialLink(
-                            index,
-                            "url",
-                            event.target.value
-                          )
-                        }
-                        placeholder="https://..."
-                        dir="ltr"
-                      />
-                    </div>
                   </div>
-
-                  <label className="sm-social-toggle">
-                    <input
-                      type="checkbox"
-                      checked={item.enabled}
-                      onChange={(event) =>
-                        updateSocialLink(
-                          index,
-                          "enabled",
-                          event.target.checked
-                        )
-                      }
-                    />
-
-                    <span className="sm-social-toggle-icon">
-                      {item.enabled ? (
-                        <Eye size={15} />
-                      ) : (
-                        <EyeOff size={15} />
-                      )}
-                    </span>
-
-                    <span>
-                      {item.enabled
-                        ? "Activé — visible dans le Footer"
-                        : "Désactivé — masqué du Footer"}
-                    </span>
-                  </label>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </section>
