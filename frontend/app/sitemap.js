@@ -1,5 +1,5 @@
 
-import { getPublicProducts } from "@/lib/api";
+import { getSitemapProducts } from "@/lib/api";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
@@ -30,7 +30,7 @@ export default async function sitemap() {
   let products = [];
 
   try {
-    products = await getPublicProducts();
+    products = await getSitemapProducts();
   } catch (error) {
     console.error("Sitemap products loading error:", error);
   }

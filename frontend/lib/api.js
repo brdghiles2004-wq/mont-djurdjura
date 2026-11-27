@@ -1,4 +1,4 @@
-﻿
+
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://mont-djurdjura-api.onrender.com/api";
@@ -56,7 +56,7 @@ export async function getPublicProducts(locale = "fr") {
       {
         method: "GET",
         headers: { Accept: "application/json" },
-        next: { revalidate: 1 },
+        cache: "no-store",
       }
     );
 
@@ -78,6 +78,31 @@ export async function getPublicProducts(locale = "fr") {
   }
 }
 
+export async function getSitemapProducts() {
+  try {
+    const response = await fetch(`${API_BASE}/products?locale=fr`, {
+      method: "GET",
+      headers: { Accept: "application/json" },
+      next: { revalidate: 300 },
+    });
+
+    if (!response.ok) {
+      console.error("Sitemap Products API error:", response.status);
+      return [];
+    }
+
+    const result = await response.json();
+
+    if (!result.success || !Array.isArray(result.data)) {
+      return [];
+    }
+
+    return result.data.map(normalizeProduct).filter(Boolean);
+  } catch (error) {
+    console.error("Unable to load sitemap products:", error);
+    return [];
+  }
+}
 export async function getPublicProduct(slug, locale = "fr") {
   try {
     const language = normalizeLocale(locale);
@@ -87,7 +112,7 @@ export async function getPublicProduct(slug, locale = "fr") {
       {
         method: "GET",
         headers: { Accept: "application/json" },
-        next: { revalidate: 1 },
+        cache: "no-store",
       }
     );
 
